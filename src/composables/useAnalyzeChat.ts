@@ -154,6 +154,8 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
                   
                   return (
                     className.includes('modal') ||
+                    className.includes('overlay') ||
+                    className.includes('analyze-chat') ||
                     className.includes('dropdown') ||
                     className.includes('tooltip') ||
                     element.getAttribute('role') === 'dialog'

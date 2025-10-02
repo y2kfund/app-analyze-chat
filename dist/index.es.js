@@ -4962,7 +4962,7 @@ function eQ(e = {}) {
               ignoreElements: (v) => {
                 try {
                   const H = Q(v);
-                  return H.includes("modal") || H.includes("dropdown") || H.includes("tooltip") || v.getAttribute("role") === "dialog";
+                  return H.includes("modal") || H.includes("overlay") || H.includes("analyze-chat") || H.includes("dropdown") || H.includes("tooltip") || v.getAttribute("role") === "dialog";
                 } catch (H) {
                   return console.warn("[AnalyzeChat] Error checking element in ignoreElements:", H), !1;
                 }
