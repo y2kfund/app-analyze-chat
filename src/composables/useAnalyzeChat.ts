@@ -47,6 +47,23 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
     }
   }
 
+  // Helper to safely get className as string
+  const getClassNameString = (element: Element): string => {
+    try {
+      // Handle SVGAnimatedString and other non-string className types
+      const className = element.className
+      if (typeof className === 'string') {
+        return className
+      }
+      if (className && typeof className === 'object' && 'baseVal' in className) {
+        return (className as any).baseVal || ''
+      }
+      return ''
+    } catch {
+      return ''
+    }
+  }
+
   // Create a simplified version of the page for screenshot
   const createScreenshotClone = (): HTMLElement => {
     const clone = document.body.cloneNode(true) as HTMLElement
@@ -132,18 +149,43 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
               backgroundColor: '#ffffff',
               foreignObjectRendering: false,
               ignoreElements: (element) => {
-                const tagName = element.tagName.toLowerCase()
-                const className = element.className || ''
-                
-                return (
-                  tagName === 'script' ||
-                  tagName === 'style' ||
-                  tagName === 'link' ||
-                  className.includes('modal') ||
-                  className.includes('dropdown') ||
-                  className.includes('tooltip') ||
-                  element.getAttribute('role') === 'dialog'
-                )
+                try {
+                  const tagName = element.tagName?.toLowerCase() || ''
+                  const className = getClassNameString(element)
+                  const role = element.getAttribute('role') || ''
+                  
+                  return (
+                    tagName === 'script' ||
+                    tagName === 'style' ||
+                    tagName === 'link' ||
+                    className.includes('modal') ||
+                    className.includes('dropdown') ||
+                    className.includes('tooltip') ||
+                    role === 'dialog'
+                  )
+                } catch (error) {
+                  console.warn('[AnalyzeChat] Error checking element in ignoreElements:', error)
+                  return false
+                }
+              },
+              onclone: (clonedDoc) => {
+                // Remove problematic CSS that html2canvas can't parse
+                try {
+                  const styles = clonedDoc.querySelectorAll('style')
+                  styles.forEach(style => {
+                    if (style.textContent) {
+                      // Remove modern CSS color functions that html2canvas doesn't support
+                      style.textContent = style.textContent
+                        .replace(/color\([^)]+\)/g, '#000000')
+                        .replace(/lab\([^)]+\)/g, '#000000')
+                        .replace(/lch\([^)]+\)/g, '#000000')
+                        .replace(/oklab\([^)]+\)/g, '#000000')
+                        .replace(/oklch\([^)]+\)/g, '#000000')
+                    }
+                  })
+                } catch (error) {
+                  console.warn('[AnalyzeChat] Error cleaning CSS:', error)
+                }
               }
             })
             
@@ -188,7 +230,25 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
               logging: false,
               imageTimeout: 8000,
               backgroundColor: '#ffffff',
-              foreignObjectRendering: false
+              foreignObjectRendering: false,
+              onclone: (clonedDoc) => {
+                // Remove problematic CSS
+                try {
+                  const styles = clonedDoc.querySelectorAll('style')
+                  styles.forEach(style => {
+                    if (style.textContent) {
+                      style.textContent = style.textContent
+                        .replace(/color\([^)]+\)/g, '#000000')
+                        .replace(/lab\([^)]+\)/g, '#000000')
+                        .replace(/lch\([^)]+\)/g, '#000000')
+                        .replace(/oklab\([^)]+\)/g, '#000000')
+                        .replace(/oklch\([^)]+\)/g, '#000000')
+                    }
+                  })
+                } catch (error) {
+                  console.warn('[AnalyzeChat] Error cleaning CSS in fallback:', error)
+                }
+              }
             })
             
             document.body.removeChild(clonedElement)
