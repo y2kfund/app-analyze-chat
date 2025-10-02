@@ -150,18 +150,13 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
               foreignObjectRendering: false,
               ignoreElements: (element) => {
                 try {
-                  const tagName = element.tagName?.toLowerCase() || ''
                   const className = getClassNameString(element)
-                  const role = element.getAttribute('role') || ''
                   
                   return (
-                    tagName === 'script' ||
-                    tagName === 'style' ||
-                    tagName === 'link' ||
                     className.includes('modal') ||
                     className.includes('dropdown') ||
                     className.includes('tooltip') ||
-                    role === 'dialog'
+                    element.getAttribute('role') === 'dialog'
                   )
                 } catch (error) {
                   console.warn('[AnalyzeChat] Error checking element in ignoreElements:', error)
