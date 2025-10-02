@@ -1,4 +1,4 @@
-import type { App } from 'vue'
+import { App } from 'vue'
 import AnalyzeChat from './AnalyzeChat.vue'
 import { useAnalyzeChat } from './composables/useAnalyzeChat'
 import type { Conversation, AnalyzeChatConfig, AnalyzeChatProps, AnalyzeChatEmits } from './types'
