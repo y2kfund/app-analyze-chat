@@ -5204,7 +5204,7 @@ const rQ = { class: "analyze-chat-header" }, tQ = {
         ref: B
       }, [
         m("div", rQ, [
-          g[4] || (g[4] = m("h2", null, "AI Assistant", -1)),
+          g[4] || (g[4] = m("h2", null, "AI Analysis", -1)),
           m("button", {
             onClick: g[0] || (g[0] = (w) => U.$emit("close")),
             class: "close-button"
@@ -5272,7 +5272,7 @@ const rQ = { class: "analyze-chat-header" }, tQ = {
             ]),
             m("div", oQ, [
               g[9] || (g[9] = m("div", { class: "message-header" }, [
-                m("span", { class: "sender ai" }, "AI Assistant")
+                m("span", { class: "sender ai" }, "AI Analysis")
               ], -1)),
               w.loading ? (BA(), tA("div", cQ, [...g[7] || (g[7] = [
                 m("div", { class: "loading-dots" }, null, -1),
@@ -5365,7 +5365,7 @@ const rQ = { class: "analyze-chat-header" }, tQ = {
   for (const [r, B] of A)
     t[r] = B;
   return t;
-}, EQ = /* @__PURE__ */ dQ(hQ, [["__scopeId", "data-v-5164fb19"]]), HQ = {
+}, EQ = /* @__PURE__ */ dQ(hQ, [["__scopeId", "data-v-8714e425"]]), HQ = {
   install(e) {
     e.component("AnalyzeChat", EQ);
   }
