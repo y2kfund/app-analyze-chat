@@ -168,20 +168,52 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
               onclone: (clonedDoc) => {
                 // Remove problematic CSS that html2canvas can't parse
                 try {
+                  console.log('[AnalyzeChat] Cleaning CSS in cloned document...')
+                  
+                  // Get all style elements
                   const styles = clonedDoc.querySelectorAll('style')
-                  styles.forEach(style => {
+                  console.log(`[AnalyzeChat] Found ${styles.length} style elements`)
+                  
+                  styles.forEach((style, index) => {
                     if (style.textContent) {
-                      // Remove modern CSS color functions that html2canvas doesn't support
+                      const originalLength = style.textContent.length
+                      
+                      // More aggressive replacement of modern CSS color functions
                       style.textContent = style.textContent
-                        .replace(/color\([^)]+\)/g, '#000000')
-                        .replace(/lab\([^)]+\)/g, '#000000')
-                        .replace(/lch\([^)]+\)/g, '#000000')
-                        .replace(/oklab\([^)]+\)/g, '#000000')
-                        .replace(/oklch\([^)]+\)/g, '#000000')
+                        // Remove color() function with any content including nested parentheses
+                        .replace(/color\s*\([^)]*(?:\([^)]*\)[^)]*)*\)/gi, '#000000')
+                        .replace(/color-mix\s*\([^)]*(?:\([^)]*\)[^)]*)*\)/gi, '#000000')
+                        .replace(/lab\s*\([^)]*\)/gi, '#000000')
+                        .replace(/lch\s*\([^)]*\)/gi, '#000000')
+                        .replace(/oklab\s*\([^)]*\)/gi, '#000000')
+                        .replace(/oklch\s*\([^)]*\)/gi, '#000000')
+                        // Remove any remaining color() functions even if malformed
+                        .replace(/color\s*\(/gi, 'rgb(0,0,0 /*')
+                      
+                      const newLength = style.textContent.length
+                      if (originalLength !== newLength) {
+                        console.log(`[AnalyzeChat] Style ${index}: cleaned ${originalLength - newLength} chars`)
+                      }
                     }
                   })
+                  
+                  // Also check and clean inline styles
+                  const elementsWithStyle = clonedDoc.querySelectorAll('[style]')
+                  elementsWithStyle.forEach(element => {
+                    const styleAttr = element.getAttribute('style')
+                    if (styleAttr && /color\s*\(/i.test(styleAttr)) {
+                      const cleaned = styleAttr
+                        .replace(/color\s*\([^)]*(?:\([^)]*\)[^)]*)*\)/gi, '#000000')
+                        .replace(/lab\s*\([^)]*\)/gi, '#000000')
+                        .replace(/lch\s*\([^)]*\)/gi, '#000000')
+                      element.setAttribute('style', cleaned)
+                      console.log('[AnalyzeChat] Cleaned inline style')
+                    }
+                  })
+                  
+                  console.log('[AnalyzeChat] CSS cleaning completed')
                 } catch (error) {
-                  console.warn('[AnalyzeChat] Error cleaning CSS:', error)
+                  console.error('[AnalyzeChat] Error cleaning CSS:', error)
                 }
               }
             })
@@ -231,19 +263,23 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
               onclone: (clonedDoc) => {
                 // Remove problematic CSS
                 try {
+                  console.log('[AnalyzeChat] Cleaning CSS in fallback cloned document...')
                   const styles = clonedDoc.querySelectorAll('style')
                   styles.forEach(style => {
                     if (style.textContent) {
                       style.textContent = style.textContent
-                        .replace(/color\([^)]+\)/g, '#000000')
-                        .replace(/lab\([^)]+\)/g, '#000000')
-                        .replace(/lch\([^)]+\)/g, '#000000')
-                        .replace(/oklab\([^)]+\)/g, '#000000')
-                        .replace(/oklch\([^)]+\)/g, '#000000')
+                        .replace(/color\s*\([^)]*(?:\([^)]*\)[^)]*)*\)/gi, '#000000')
+                        .replace(/color-mix\s*\([^)]*(?:\([^)]*\)[^)]*)*\)/gi, '#000000')
+                        .replace(/lab\s*\([^)]*\)/gi, '#000000')
+                        .replace(/lch\s*\([^)]*\)/gi, '#000000')
+                        .replace(/oklab\s*\([^)]*\)/gi, '#000000')
+                        .replace(/oklch\s*\([^)]*\)/gi, '#000000')
+                        .replace(/color\s*\(/gi, 'rgb(0,0,0 /*')
                     }
                   })
+                  console.log('[AnalyzeChat] Fallback CSS cleaning completed')
                 } catch (error) {
-                  console.warn('[AnalyzeChat] Error cleaning CSS in fallback:', error)
+                  console.error('[AnalyzeChat] Error cleaning CSS in fallback:', error)
                 }
               }
             })
