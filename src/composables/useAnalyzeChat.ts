@@ -16,34 +16,191 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
     screenshotQuality = 0.7,
     storageKey = DEFAULT_STORAGE_KEY,
     captureScreenshots = true,
-    headers = {}
+    headers = {},
+    supabaseClient = null,
+    user = null,
+    enableDatabase = !!supabaseClient
   } = config
 
   const conversations = ref<Conversation[]>([])
   const isProcessing = ref(false)
+  const isLoading = ref(false)
 
-  // Load conversations from localStorage on initialization
-  const loadConversations = () => {
+  // Check if database storage is available
+  const canUseDatabase = () => {
+    return enableDatabase && supabaseClient && user?.id
+  }
+
+  // Load conversations from database or localStorage
+  const loadConversations = async () => {
+    if (canUseDatabase()) {
+      await loadFromDatabase()
+    } else {
+      loadFromLocalStorage()
+    }
+  }
+
+  // Load from Supabase database
+  const loadFromDatabase = async () => {
+    if (!supabaseClient || !user?.id) return
+    
+    isLoading.value = true
+    try {
+      console.log('[AnalyzeChat] Loading conversations from database...')
+      
+      const { data, error } = await supabaseClient
+        .schema('hf')
+        .from('ai_conversations')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(50)
+      
+      if (error) throw error
+      
+      conversations.value = data.map((conv: any) => ({
+        id: conv.id,
+        question: conv.question,
+        response: conv.response,
+        screenshot: conv.screenshot_url,
+        timestamp: new Date(conv.created_at),
+        loading: false,
+        error: null,
+        userId: conv.user_id,
+        isFromDb: true
+      }))
+      
+      console.log(`[AnalyzeChat] Loaded ${conversations.value.length} conversations from database`)
+    } catch (error) {
+      console.error('[AnalyzeChat] Error loading from database:', error)
+      // Fallback to localStorage
+      loadFromLocalStorage()
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Load from localStorage
+  const loadFromLocalStorage = () => {
     try {
       const saved = localStorage.getItem(storageKey)
       if (saved) {
         const parsed = JSON.parse(saved)
         conversations.value = parsed.map((conv: any) => ({
           ...conv,
-          timestamp: new Date(conv.timestamp)
+          timestamp: new Date(conv.timestamp),
+          isFromDb: false
         }))
+        console.log(`[AnalyzeChat] Loaded ${conversations.value.length} conversations from localStorage`)
       }
     } catch (error) {
-      console.error('[AnalyzeChat] Error loading conversations:', error)
+      console.error('[AnalyzeChat] Error loading from localStorage:', error)
     }
   }
 
-  // Save conversations to localStorage
-  const saveConversations = () => {
+  // Save to localStorage
+  const saveToLocalStorage = () => {
     try {
       localStorage.setItem(storageKey, JSON.stringify(conversations.value))
     } catch (error) {
-      console.error('[AnalyzeChat] Error saving conversations:', error)
+      console.error('[AnalyzeChat] Error saving to localStorage:', error)
+    }
+  }
+
+  // Upload screenshot to Supabase Storage
+  const uploadScreenshot = async (
+    base64: string,
+    conversationId: string,
+    userId: string
+  ): Promise<string> => {
+    if (!supabaseClient) {
+      console.warn('[AnalyzeChat] No Supabase client, cannot upload screenshot')
+      return base64
+    }
+
+    try {
+      console.log('[AnalyzeChat] Uploading screenshot to Supabase Storage...')
+
+      // Convert base64 to blob
+      const response = await fetch(base64)
+      const blob = await response.blob()
+
+      // Create file path: {user_id}/{conversation_id}.jpg
+      const filePath = `${userId}/${conversationId}.jpg`
+
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabaseClient.storage
+        .from('ai-screenshots')
+        .upload(filePath, blob, {
+          contentType: 'image/jpeg',
+          upsert: true,
+          cacheControl: '3600'
+        })
+
+      if (uploadError) {
+        console.error('[AnalyzeChat] Screenshot upload error:', uploadError)
+        throw uploadError
+      }
+
+      // Get public URL
+      const { data } = supabaseClient.storage
+        .from('ai-screenshots')
+        .getPublicUrl(filePath)
+
+      console.log('[AnalyzeChat] Screenshot uploaded successfully:', data.publicUrl)
+      return data.publicUrl
+    } catch (error) {
+      console.error('[AnalyzeChat] Screenshot upload failed:', error)
+      return base64 // Fallback to base64
+    }
+  }
+
+  // Save conversation to database
+  const saveConversationToDatabase = async (conversation: Conversation): Promise<boolean> => {
+    if (!supabaseClient || !user?.id) {
+      console.warn('[AnalyzeChat] Cannot save to database: missing supabaseClient or user')
+      return false
+    }
+
+    try {
+      console.log('[AnalyzeChat] Saving conversation to database...')
+
+      // Upload screenshot first if it's base64
+      let screenshotUrl = conversation.screenshot
+      if (screenshotUrl && screenshotUrl.startsWith('data:')) {
+        screenshotUrl = await uploadScreenshot(screenshotUrl, conversation.id, user.id)
+      }
+
+      // Insert into database
+      const { error } = await supabaseClient
+        .schema('hf')
+        .from('ai_conversations')
+        .insert({
+          id: conversation.id,
+          user_id: user.id,
+          question: conversation.question,
+          response: conversation.response,
+          screenshot_url: screenshotUrl
+        })
+
+      if (error) {
+        console.error('[AnalyzeChat] Database insert error:', error)
+        throw error
+      }
+
+      // Update local state with uploaded URL
+      const index = conversations.value.findIndex(c => c.id === conversation.id)
+      if (index !== -1) {
+        conversations.value[index].screenshot = screenshotUrl
+        conversations.value[index].isFromDb = true
+        conversations.value[index].userId = user.id
+      }
+
+      console.log('[AnalyzeChat] Conversation saved to database successfully')
+      return true
+    } catch (error) {
+      console.error('[AnalyzeChat] Failed to save conversation to database:', error)
+      return false
     }
   }
 
@@ -361,19 +518,20 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
     console.log('[AnalyzeChat] Starting AI question process...')
     isProcessing.value = true
     
-    // Create conversation entry with loading state
+    // Create conversation entry with loading state (use UUID)
     const conversation: Conversation = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
       question: question.trim(),
       response: '',
       screenshot: null,
       timestamp: new Date(),
       loading: true,
-      error: null
+      error: null,
+      userId: user?.id
     }
     
-    conversations.value.push(conversation)
-    saveConversations()
+    // Add to UI immediately for instant feedback
+    conversations.value.unshift(conversation)
     
     try {
       console.log('[AnalyzeChat] Capturing screenshot...')
@@ -387,9 +545,6 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
       } else if (captureScreenshots) {
         console.warn('[AnalyzeChat] Screenshot capture failed, proceeding without screenshot')
       }
-      
-      // Save conversation with screenshot
-      saveConversations()
       
       // Prepare the request payload
       const payload = {
@@ -413,10 +568,16 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
         body: JSON.stringify(payload)
       })
       
+      // Check if API returned 200 OK
       if (!response.ok) {
         const errorText = await response.text()
-        console.error('[AnalyzeChat] API Error Response:', errorText)
-        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`)
+        const errorMsg = `AI API Error: ${response.status} - ${errorText}`
+        console.error('[AnalyzeChat]', errorMsg)
+        
+        // Show alert to user
+        alert(`❌ Failed to get AI response\n\n${errorMsg}\n\nPlease try again.`)
+        
+        throw new Error(errorMsg)
       }
       
       const data = await response.json()
@@ -425,15 +586,35 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
       conversation.response = data.response || 'Sorry, I could not process your request.'
       conversation.loading = false
       
+      // ✅ ONLY save to database if API returned 200 OK
+      if (canUseDatabase()) {
+        const saved = await saveConversationToDatabase(conversation)
+        if (!saved) {
+          console.warn('[AnalyzeChat] Database save failed, falling back to localStorage')
+          saveToLocalStorage()
+        }
+      } else {
+        // Save to localStorage if database not available
+        saveToLocalStorage()
+      }
+      
     } catch (error) {
       console.error('[AnalyzeChat] Error in askQuestion:', error)
-      conversation.error = error instanceof Error ? error.message : 'Failed to get response. Please try again.'
+      
+      const errorMessage = error instanceof Error ? error.message : 'Failed to get response. Please try again.'
+      conversation.error = errorMessage
       conversation.loading = false
+      
+      // Show alert to user for API errors
+      if (!conversation.error.includes('API Error')) {
+        alert(`❌ Error: ${errorMessage}`)
+      }
+      
+      // Save error state to localStorage (not database)
+      saveToLocalStorage()
     }
     
     isProcessing.value = false
-    saveConversations()
-    
     console.log('[AnalyzeChat] AI question process completed')
   }
 
@@ -456,9 +637,30 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
   }
 
   // Clear conversation history
-  const clearConversations = () => {
+  const clearConversations = async () => {
+    if (canUseDatabase() && supabaseClient && user?.id) {
+      try {
+        console.log('[AnalyzeChat] Clearing conversations from database...')
+        const { error } = await supabaseClient
+          .schema('hf')
+          .from('ai_conversations')
+          .delete()
+          .eq('user_id', user.id)
+        
+        if (error) {
+          console.error('[AnalyzeChat] Error clearing database:', error)
+          throw error
+        }
+        console.log('[AnalyzeChat] Database conversations cleared')
+      } catch (error) {
+        console.error('[AnalyzeChat] Failed to clear database:', error)
+      }
+    }
+    
+    // Always clear localStorage and local state
+    localStorage.removeItem(storageKey)
     conversations.value = []
-    saveConversations()
+    console.log('[AnalyzeChat] Conversations cleared')
   }
 
   // Initialize conversations on creation
@@ -467,6 +669,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
   return {
     conversations: computed(() => conversations.value),
     isProcessing: computed(() => isProcessing.value),
+    isLoading: computed(() => isLoading.value),
     askQuestion,
     clearConversations,
     testScreenshot,

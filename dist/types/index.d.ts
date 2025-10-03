@@ -8,7 +8,7 @@ export interface Conversation {
     question: string;
     /** AI's response */
     response: string;
-    /** Base64 encoded screenshot (if captured) */
+    /** Base64 encoded screenshot or URL (if captured) */
     screenshot: string | null;
     /** When the conversation occurred */
     timestamp: Date;
@@ -16,6 +16,10 @@ export interface Conversation {
     loading: boolean;
     /** Error message if the conversation failed */
     error: string | null;
+    /** User ID (for database storage) */
+    userId?: string;
+    /** Flag indicating if conversation was loaded from database */
+    isFromDb?: boolean;
 }
 /**
  * Configuration options for the AnalyzeChat component
@@ -33,6 +37,14 @@ export interface AnalyzeChatConfig {
     captureScreenshots?: boolean;
     /** Custom headers to include in API requests */
     headers?: Record<string, string>;
+    /** Supabase client instance for database storage */
+    supabaseClient?: any;
+    /** Current authenticated user object with id property */
+    user?: {
+        id: string;
+    } | null;
+    /** Enable database storage (requires supabaseClient and user). Default: true if supabaseClient provided */
+    enableDatabase?: boolean;
 }
 /**
  * Props for the AnalyzeChat component

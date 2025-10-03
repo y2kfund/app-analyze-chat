@@ -13,10 +13,13 @@ export declare function useAnalyzeChat(config?: AnalyzeChatConfig): {
         timestamp: Date;
         loading: boolean;
         error: string | null;
+        userId?: string | undefined;
+        isFromDb?: boolean | undefined;
     }[]>;
     isProcessing: import('vue').ComputedRef<boolean>;
+    isLoading: import('vue').ComputedRef<boolean>;
     askQuestion: (question: string) => Promise<void>;
-    clearConversations: () => void;
+    clearConversations: () => Promise<void>;
     testScreenshot: () => Promise<void>;
     captureScreenshot: () => Promise<string | null>;
     conversationsRef: Ref<Conversation[]>;

@@ -11,7 +11,7 @@ export interface Conversation {
   /** AI's response */
   response: string
   
-  /** Base64 encoded screenshot (if captured) */
+  /** Base64 encoded screenshot or URL (if captured) */
   screenshot: string | null
   
   /** When the conversation occurred */
@@ -22,6 +22,12 @@ export interface Conversation {
   
   /** Error message if the conversation failed */
   error: string | null
+  
+  /** User ID (for database storage) */
+  userId?: string
+  
+  /** Flag indicating if conversation was loaded from database */
+  isFromDb?: boolean
 }
 
 /**
@@ -45,6 +51,15 @@ export interface AnalyzeChatConfig {
   
   /** Custom headers to include in API requests */
   headers?: Record<string, string>
+  
+  /** Supabase client instance for database storage */
+  supabaseClient?: any
+  
+  /** Current authenticated user object with id property */
+  user?: { id: string } | null
+  
+  /** Enable database storage (requires supabaseClient and user). Default: true if supabaseClient provided */
+  enableDatabase?: boolean
 }
 
 /**
