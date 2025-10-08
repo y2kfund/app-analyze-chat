@@ -22,6 +22,7 @@ export declare function useAnalyzeChat(config?: AnalyzeChatConfig): {
     clearConversations: () => Promise<void>;
     testScreenshot: () => Promise<void>;
     captureScreenshot: () => Promise<string | null>;
+    loadConversations: () => Promise<void>;
     conversationsRef: Ref<Conversation[]>;
     isProcessingRef: Ref<boolean, boolean>;
 };

@@ -663,8 +663,10 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
     console.log('[AnalyzeChat] Conversations cleared')
   }
 
-  // Initialize conversations on creation
-  loadConversations()
+  // Initialize conversations on creation only if autoLoad is enabled
+  if (config.autoLoad !== false) {
+    loadConversations()
+  }
 
   return {
     conversations: computed(() => conversations.value),
@@ -674,6 +676,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
     clearConversations,
     testScreenshot,
     captureScreenshot,
+    loadConversations, // Export for manual loading
     // Export refs for advanced usage
     conversationsRef: conversations as Ref<Conversation[]>,
     isProcessingRef: isProcessing

@@ -45,6 +45,8 @@ export interface AnalyzeChatConfig {
     } | null;
     /** Enable database storage (requires supabaseClient and user). Default: true if supabaseClient provided */
     enableDatabase?: boolean;
+    /** Whether to automatically load previous conversations on initialization. Default: true */
+    autoLoad?: boolean;
 }
 /**
  * Props for the AnalyzeChat component

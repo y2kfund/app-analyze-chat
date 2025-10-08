@@ -5194,7 +5194,7 @@ Please try again.`), new Error(j);
       }
     localStorage.removeItem(n), c.value = [], console.log("[AnalyzeChat] Conversations cleared");
   };
-  return w(), {
+  return e.autoLoad !== !1 && w(), {
     conversations: Qr(() => c.value),
     isProcessing: Qr(() => l.value),
     isLoading: Qr(() => g.value),
@@ -5202,6 +5202,8 @@ Please try again.`), new Error(j);
     clearConversations: N,
     testScreenshot: I,
     captureScreenshot: F,
+    loadConversations: w,
+    // Export for manual loading
     // Export refs for advanced usage
     conversationsRef: c,
     isProcessingRef: l
