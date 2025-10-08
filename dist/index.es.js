@@ -5292,7 +5292,7 @@ const rl = { class: "analyze-chat-header" }, tl = {
         ref: n
       }, [
         b("div", rl, [
-          Q[4] || (Q[4] = b("h2", null, "AI Analysis", -1)),
+          Q[4] || (Q[4] = b("h2", null, "Analyze", -1)),
           b("button", {
             onClick: Q[0] || (Q[0] = (H) => C.$emit("close")),
             class: "close-button"
@@ -5360,7 +5360,7 @@ const rl = { class: "analyze-chat-header" }, tl = {
             ]),
             b("div", ol, [
               Q[9] || (Q[9] = b("div", { class: "message-header" }, [
-                b("span", { class: "sender ai" }, "AI Analysis")
+                b("span", { class: "sender ai" }, "Analyze")
               ], -1)),
               H.loading ? (oA(), iA("div", cl, [...Q[7] || (Q[7] = [
                 b("div", { class: "loading-dots" }, null, -1),
@@ -5453,7 +5453,7 @@ const rl = { class: "analyze-chat-header" }, tl = {
   for (const [r, n] of A)
     t[r] = n;
   return t;
-}, pl = /* @__PURE__ */ dl(hl, [["__scopeId", "data-v-8714e425"]]), Hl = {
+}, pl = /* @__PURE__ */ dl(hl, [["__scopeId", "data-v-2f67e0f7"]]), Hl = {
   install(e) {
     e.component("AnalyzeChat", pl);
   }

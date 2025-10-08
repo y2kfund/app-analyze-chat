@@ -3,7 +3,7 @@
     <div class="analyze-chat-container" ref="modalRef">
       <!-- Header -->
       <div class="analyze-chat-header">
-        <h2>AI Analysis</h2>
+        <h2>Analyze</h2>
         <button @click="$emit('close')" class="close-button">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
@@ -37,7 +37,7 @@
           
           <div class="conversation-response">
             <div class="message-header">
-              <span class="sender ai">AI Analysis</span>
+              <span class="sender ai">Analyze</span>
             </div>
             <div v-if="conversation.loading" class="loading-response">
               <div class="loading-dots"></div>
