@@ -5133,7 +5133,7 @@ function el(e = {}) {
       error: null,
       userId: a == null ? void 0 : a.id
     };
-    c.value.unshift(u);
+    c.value.push(u);
     try {
       console.log("[AnalyzeChat] Capturing screenshot...");
       const E = await F();

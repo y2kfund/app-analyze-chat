@@ -531,7 +531,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
     }
     
     // Add to UI immediately for instant feedback
-    conversations.value.unshift(conversation)
+    conversations.value.push(conversation)
     
     try {
       console.log('[AnalyzeChat] Capturing screenshot...')
