@@ -2,7 +2,7 @@ import { ref, computed, type Ref } from 'vue'
 import html2canvas from 'html2canvas'
 import type { Conversation, AnalyzeChatConfig } from '../types'
 
-const DEFAULT_API_URL = 'https://ai-assistant-worker.demo-cdn-v1.workers.dev/api/ai-assistant'
+const DEFAULT_API_URL = 'https://www.y2k.fund/api/ai-analyze'
 const DEFAULT_STORAGE_KEY = 'y2kfund-analyze-chat-conversations'
 
 /**
@@ -13,7 +13,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
   const {
     apiUrl = DEFAULT_API_URL,
     maxScreenshotRetries = 2,
-    screenshotQuality = 0.7,
+    screenshotQuality = 0.9,
     storageKey = DEFAULT_STORAGE_KEY,
     captureScreenshots = true,
     headers = {},

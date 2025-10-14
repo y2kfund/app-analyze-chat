@@ -4866,12 +4866,12 @@ var qc = function(e, A) {
   var r = A.ownerDocument, n = r.documentElement ? ce(e, getComputedStyle(r.documentElement).backgroundColor) : hA.TRANSPARENT, B = r.body ? ce(e, getComputedStyle(r.body).backgroundColor) : hA.TRANSPARENT, s = typeof t == "string" ? ce(e, t) : t === null ? hA.TRANSPARENT : 4294967295;
   return A === r.documentElement ? KA(n) ? KA(B) ? s : B : n : s;
 };
-const $c = "https://ai-assistant-worker.demo-cdn-v1.workers.dev/api/ai-assistant", Al = "y2kfund-analyze-chat-conversations";
+const $c = "https://www.y2k.fund/api/ai-analyze", Al = "y2kfund-analyze-chat-conversations";
 function el(e = {}) {
   const {
     apiUrl: A = $c,
     maxScreenshotRetries: t = 2,
-    screenshotQuality: r = 0.7,
+    screenshotQuality: r = 0.9,
     storageKey: n = Al,
     captureScreenshots: B = !0,
     headers: s = {},
