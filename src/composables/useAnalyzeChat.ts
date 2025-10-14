@@ -13,7 +13,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
   const {
     apiUrl = DEFAULT_API_URL,
     maxScreenshotRetries = 2,
-    screenshotQuality = 0.9,
+    //screenshotQuality = 0.95,
     storageKey = DEFAULT_STORAGE_KEY,
     captureScreenshots = true,
     headers = {},
@@ -125,14 +125,14 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
       const response = await fetch(base64)
       const blob = await response.blob()
 
-      // Create file path: {user_id}/{conversation_id}.jpg
-      const filePath = `${userId}/${conversationId}.jpg`
+      // Create file path: {user_id}/{conversation_id}.png
+      const filePath = `${userId}/${conversationId}.png`
 
       // Upload to Supabase Storage
       const { error: uploadError } = await supabaseClient.storage
         .from('ai-screenshots')
         .upload(filePath, blob, {
-          contentType: 'image/jpeg',
+          contentType: 'image/png',
           upsert: true,
           cacheControl: '3600'
         })
@@ -299,9 +299,9 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
               scrollY: 0,
               useCORS: true,
               allowTaint: false,
-              scale: 0.5,
+              scale: 1.5,
               logging: false,
-              imageTimeout: 10000,
+              imageTimeout: 15000,
               removeContainer: true,
               backgroundColor: '#ffffff',
               foreignObjectRendering: false,
@@ -380,7 +380,8 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
               element.style.display = originalDisplayValues[index] || ''
             })
             
-            const screenshot = canvas.toDataURL('image/jpeg', screenshotQuality)
+            //const screenshot = canvas.toDataURL('image/jpeg', screenshotQuality)
+            const screenshot = canvas.toDataURL('image/png')
             console.log(`[AnalyzeChat] Screenshot captured successfully on attempt ${attempt}`)
             return screenshot
             
@@ -412,9 +413,9 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
               width: window.innerWidth,
               useCORS: true,
               allowTaint: false,
-              scale: 0.4,
+              scale: 1.0,
               logging: false,
-              imageTimeout: 8000,
+              imageTimeout: 12000,
               backgroundColor: '#ffffff',
               foreignObjectRendering: false,
               onclone: (clonedDoc) => {
@@ -443,7 +444,8 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
             
             document.body.removeChild(clonedElement)
             
-            const screenshot = canvas.toDataURL('image/jpeg', screenshotQuality - 0.1)
+            //const screenshot = canvas.toDataURL('image/jpeg', screenshotQuality - 0.1)
+            const screenshot = canvas.toDataURL('image/png')
             console.log(`[AnalyzeChat] Screenshot captured with fallback method`)
             return screenshot
             
