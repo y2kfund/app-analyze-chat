@@ -172,6 +172,38 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
         screenshotUrl = await uploadScreenshot(screenshotUrl, conversation.id, user.id)
       }
 
+      // Replace base64 image_url in api_payload with screenshot URL
+      let cleanedApiPayload = conversation.api_payload
+      if (cleanedApiPayload && screenshotUrl) {
+        try {
+          // Deep clone to avoid mutating original
+          cleanedApiPayload = JSON.parse(JSON.stringify(cleanedApiPayload))
+          
+          // Navigate to request_sent_to_openrouter.messages and replace image_url
+          if (cleanedApiPayload && cleanedApiPayload.request_sent_to_openrouter?.messages) {
+            cleanedApiPayload.request_sent_to_openrouter.messages.forEach((message: any) => {
+              if (message.content && Array.isArray(message.content)) {
+                message.content.forEach((contentItem: any) => {
+                  if (contentItem.type === 'image_url' && contentItem.image_url) {
+                    // Replace the base64 data with the screenshot URL
+                    contentItem.image_url = {
+                      url: screenshotUrl,
+                      detail: contentItem.image_url.detail || 'high'
+                    }
+                  }
+                })
+              }
+            })
+          }
+          
+          console.log('[AnalyzeChat] Replaced base64 image_url with screenshot URL in api_payload')
+        } catch (error) {
+          console.error('[AnalyzeChat] Error cleaning api_payload:', error)
+          // Continue with original payload if cleaning fails
+          cleanedApiPayload = conversation.api_payload
+        }
+      }
+
       // Insert into database
       const { error } = await supabaseClient
         .schema('hf')
@@ -182,7 +214,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
           question: conversation.question,
           response: conversation.response,
           screenshot_url: screenshotUrl,
-          api_payload: conversation.api_payload  // NEW: Save api_payload
+          api_payload: cleanedApiPayload  // Save cleaned api_payload
         })
 
       if (error) {
