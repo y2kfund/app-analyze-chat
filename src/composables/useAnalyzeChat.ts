@@ -563,7 +563,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
         pageText: screenshot ? undefined : document.body.innerText.slice(0, 1000)
       }
       
-      console.log('[AnalyzeChat] Sending request to AI API...')
+      console.log('[AnalyzeChat] Sending request to AI API...', payload)
       
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -591,8 +591,29 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
       
       conversation.response = data.response || 'Sorry, I could not process your request.'
       conversation.loading = false
+      // console.log("DB", conversation,supabaseClient, user);
       
-      // ✅ ONLY save to database if API returned 200 OK
+        if (preCapturedScreenshot && id){
+          const { error } = await supabaseClient
+          .schema('hf')
+          .from('ai_conversations_new')
+          .insert({
+            id: conversation.id,
+            parent_id: id,
+            user_id: user.id,
+            question: conversation.question,
+            response: conversation.response,
+            screenshot_url: preCapturedScreenshot
+          })
+
+        if (error) {
+          console.error('[AnalyzeChat] Database insert error:', error)
+          throw error
+        }
+      }
+      else
+      {
+        // ✅ ONLY save to database if API returned 200 OK
       if (canUseDatabase()) {
         const saved = await saveConversationToDatabase(conversation)
         if (!saved) {
@@ -603,6 +624,8 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
         // Save to localStorage if database not available
         saveToLocalStorage()
       }
+      }
+      
       
     } catch (error) {
       console.error('[AnalyzeChat] Error in askQuestion:', error)
