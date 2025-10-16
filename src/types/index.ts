@@ -28,6 +28,23 @@ export interface Conversation {
   
   /** Flag indicating if conversation was loaded from database */
   isFromDb?: boolean
+  
+  /** API transparency data - request sent and response received from OpenRouter */
+  api_payload?: {
+    request_sent_to_openrouter: {
+      model: string
+      messages: any[]
+      parameters: {
+        max_tokens: number
+        temperature: number
+        top_p: number
+        top_k: number
+      }
+    }
+    response_received_from_openrouter: {
+      raw_response: any
+    }
+  }
 }
 
 /**

@@ -15,6 +15,21 @@ export declare function useAnalyzeChat(config?: AnalyzeChatConfig): {
         error: string | null;
         userId?: string | undefined;
         isFromDb?: boolean | undefined;
+        api_payload?: {
+            request_sent_to_openrouter: {
+                model: string;
+                messages: any[];
+                parameters: {
+                    max_tokens: number;
+                    temperature: number;
+                    top_p: number;
+                    top_k: number;
+                };
+            };
+            response_received_from_openrouter: {
+                raw_response: any;
+            };
+        } | undefined;
     }[]>;
     isProcessing: import('vue').ComputedRef<boolean>;
     isLoading: import('vue').ComputedRef<boolean>;

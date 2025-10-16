@@ -1204,8 +1204,8 @@ var Tt = function(e, A) {
     }
   }
   return e.map(function(C, y) {
-    var f = C.color;
-    return { color: f, stop: Math.max(Math.min(1, n[y] / A), 0) };
+    var U = C.color;
+    return { color: U, stop: Math.max(Math.min(1, n[y] / A), 0) };
   });
 }, ha = function(e, A, t) {
   var r = A / 2, n = t / 2, B = R(e[0], A) - r, s = n - R(e[1], t);
@@ -3619,8 +3619,8 @@ var Co = 1, yr = 2, mr = 3, Pt = 4, Jt = 5, fo = 7, Wt = 8, Kr = 9, Lr = 10, Yt 
               } else if (l.name === "counter") {
                 var w = l.values.filter(ZA), C = w[0], y = w[1];
                 if (C && G(C)) {
-                  var f = B.counters.getCounterValue(C.value), Q = y && G(y) ? jr.parse(B.context, y.value) : 3;
-                  o.appendChild(a.createTextNode(Ce(f, Q, !1)));
+                  var U = B.counters.getCounterValue(C.value), Q = y && G(y) ? jr.parse(B.context, y.value) : 3;
+                  o.appendChild(a.createTextNode(Ce(U, Q, !1)));
                 }
               } else if (l.name === "counters") {
                 var I = l.values.filter(ZA), C = I[0], K = I[1], y = I[2];
@@ -3852,27 +3852,27 @@ var nc = function(e, A) {
     function e(A) {
       var t = A.styles, r = A.bounds, n = se(t.borderTopLeftRadius, r.width, r.height), B = n[0], s = n[1], a = se(t.borderTopRightRadius, r.width, r.height), i = a[0], o = a[1], c = se(t.borderBottomRightRadius, r.width, r.height), l = c[0], g = c[1], F = se(t.borderBottomLeftRadius, r.width, r.height), w = F[0], C = F[1], y = [];
       y.push((B + i) / r.width), y.push((w + l) / r.width), y.push((s + C) / r.height), y.push((o + g) / r.height);
-      var f = Math.max.apply(Math, y);
-      f > 1 && (B /= f, s /= f, i /= f, o /= f, l /= f, g /= f, w /= f, C /= f);
-      var Q = r.width - i, I = r.height - g, K = r.width - l, v = r.height - C, h = t.borderTopWidth, x = t.borderRightWidth, S = t.borderBottomWidth, m = t.borderLeftWidth, U = R(t.paddingTop, A.bounds.width), u = R(t.paddingRight, A.bounds.width), H = R(t.paddingBottom, A.bounds.width), E = R(t.paddingLeft, A.bounds.width);
-      this.topLeftBorderDoubleOuterBox = B > 0 || s > 0 ? V(r.left + m / 3, r.top + h / 3, B - m / 3, s - h / 3, O.TOP_LEFT) : new d(r.left + m / 3, r.top + h / 3), this.topRightBorderDoubleOuterBox = B > 0 || s > 0 ? V(r.left + Q, r.top + h / 3, i - x / 3, o - h / 3, O.TOP_RIGHT) : new d(r.left + r.width - x / 3, r.top + h / 3), this.bottomRightBorderDoubleOuterBox = l > 0 || g > 0 ? V(r.left + K, r.top + I, l - x / 3, g - S / 3, O.BOTTOM_RIGHT) : new d(r.left + r.width - x / 3, r.top + r.height - S / 3), this.bottomLeftBorderDoubleOuterBox = w > 0 || C > 0 ? V(r.left + m / 3, r.top + v, w - m / 3, C - S / 3, O.BOTTOM_LEFT) : new d(r.left + m / 3, r.top + r.height - S / 3), this.topLeftBorderDoubleInnerBox = B > 0 || s > 0 ? V(r.left + m * 2 / 3, r.top + h * 2 / 3, B - m * 2 / 3, s - h * 2 / 3, O.TOP_LEFT) : new d(r.left + m * 2 / 3, r.top + h * 2 / 3), this.topRightBorderDoubleInnerBox = B > 0 || s > 0 ? V(r.left + Q, r.top + h * 2 / 3, i - x * 2 / 3, o - h * 2 / 3, O.TOP_RIGHT) : new d(r.left + r.width - x * 2 / 3, r.top + h * 2 / 3), this.bottomRightBorderDoubleInnerBox = l > 0 || g > 0 ? V(r.left + K, r.top + I, l - x * 2 / 3, g - S * 2 / 3, O.BOTTOM_RIGHT) : new d(r.left + r.width - x * 2 / 3, r.top + r.height - S * 2 / 3), this.bottomLeftBorderDoubleInnerBox = w > 0 || C > 0 ? V(r.left + m * 2 / 3, r.top + v, w - m * 2 / 3, C - S * 2 / 3, O.BOTTOM_LEFT) : new d(r.left + m * 2 / 3, r.top + r.height - S * 2 / 3), this.topLeftBorderStroke = B > 0 || s > 0 ? V(r.left + m / 2, r.top + h / 2, B - m / 2, s - h / 2, O.TOP_LEFT) : new d(r.left + m / 2, r.top + h / 2), this.topRightBorderStroke = B > 0 || s > 0 ? V(r.left + Q, r.top + h / 2, i - x / 2, o - h / 2, O.TOP_RIGHT) : new d(r.left + r.width - x / 2, r.top + h / 2), this.bottomRightBorderStroke = l > 0 || g > 0 ? V(r.left + K, r.top + I, l - x / 2, g - S / 2, O.BOTTOM_RIGHT) : new d(r.left + r.width - x / 2, r.top + r.height - S / 2), this.bottomLeftBorderStroke = w > 0 || C > 0 ? V(r.left + m / 2, r.top + v, w - m / 2, C - S / 2, O.BOTTOM_LEFT) : new d(r.left + m / 2, r.top + r.height - S / 2), this.topLeftBorderBox = B > 0 || s > 0 ? V(r.left, r.top, B, s, O.TOP_LEFT) : new d(r.left, r.top), this.topRightBorderBox = i > 0 || o > 0 ? V(r.left + Q, r.top, i, o, O.TOP_RIGHT) : new d(r.left + r.width, r.top), this.bottomRightBorderBox = l > 0 || g > 0 ? V(r.left + K, r.top + I, l, g, O.BOTTOM_RIGHT) : new d(r.left + r.width, r.top + r.height), this.bottomLeftBorderBox = w > 0 || C > 0 ? V(r.left, r.top + v, w, C, O.BOTTOM_LEFT) : new d(r.left, r.top + r.height), this.topLeftPaddingBox = B > 0 || s > 0 ? V(r.left + m, r.top + h, Math.max(0, B - m), Math.max(0, s - h), O.TOP_LEFT) : new d(r.left + m, r.top + h), this.topRightPaddingBox = i > 0 || o > 0 ? V(r.left + Math.min(Q, r.width - x), r.top + h, Q > r.width + x ? 0 : Math.max(0, i - x), Math.max(0, o - h), O.TOP_RIGHT) : new d(r.left + r.width - x, r.top + h), this.bottomRightPaddingBox = l > 0 || g > 0 ? V(r.left + Math.min(K, r.width - m), r.top + Math.min(I, r.height - S), Math.max(0, l - x), Math.max(0, g - S), O.BOTTOM_RIGHT) : new d(r.left + r.width - x, r.top + r.height - S), this.bottomLeftPaddingBox = w > 0 || C > 0 ? V(r.left + m, r.top + Math.min(v, r.height - S), Math.max(0, w - m), Math.max(0, C - S), O.BOTTOM_LEFT) : new d(r.left + m, r.top + r.height - S), this.topLeftContentBox = B > 0 || s > 0 ? V(r.left + m + E, r.top + h + U, Math.max(0, B - (m + E)), Math.max(0, s - (h + U)), O.TOP_LEFT) : new d(r.left + m + E, r.top + h + U), this.topRightContentBox = i > 0 || o > 0 ? V(r.left + Math.min(Q, r.width + m + E), r.top + h + U, Q > r.width + m + E ? 0 : i - m + E, o - (h + U), O.TOP_RIGHT) : new d(r.left + r.width - (x + u), r.top + h + U), this.bottomRightContentBox = l > 0 || g > 0 ? V(r.left + Math.min(K, r.width - (m + E)), r.top + Math.min(I, r.height + h + U), Math.max(0, l - (x + u)), g - (S + H), O.BOTTOM_RIGHT) : new d(r.left + r.width - (x + u), r.top + r.height - (S + H)), this.bottomLeftContentBox = w > 0 || C > 0 ? V(r.left + m + E, r.top + v, Math.max(0, w - (m + E)), C - (S + H), O.BOTTOM_LEFT) : new d(r.left + m + E, r.top + r.height - (S + H));
+      var U = Math.max.apply(Math, y);
+      U > 1 && (B /= U, s /= U, i /= U, o /= U, l /= U, g /= U, w /= U, C /= U);
+      var Q = r.width - i, I = r.height - g, K = r.width - l, v = r.height - C, h = t.borderTopWidth, x = t.borderRightWidth, S = t.borderBottomWidth, m = t.borderLeftWidth, f = R(t.paddingTop, A.bounds.width), u = R(t.paddingRight, A.bounds.width), H = R(t.paddingBottom, A.bounds.width), E = R(t.paddingLeft, A.bounds.width);
+      this.topLeftBorderDoubleOuterBox = B > 0 || s > 0 ? V(r.left + m / 3, r.top + h / 3, B - m / 3, s - h / 3, M.TOP_LEFT) : new d(r.left + m / 3, r.top + h / 3), this.topRightBorderDoubleOuterBox = B > 0 || s > 0 ? V(r.left + Q, r.top + h / 3, i - x / 3, o - h / 3, M.TOP_RIGHT) : new d(r.left + r.width - x / 3, r.top + h / 3), this.bottomRightBorderDoubleOuterBox = l > 0 || g > 0 ? V(r.left + K, r.top + I, l - x / 3, g - S / 3, M.BOTTOM_RIGHT) : new d(r.left + r.width - x / 3, r.top + r.height - S / 3), this.bottomLeftBorderDoubleOuterBox = w > 0 || C > 0 ? V(r.left + m / 3, r.top + v, w - m / 3, C - S / 3, M.BOTTOM_LEFT) : new d(r.left + m / 3, r.top + r.height - S / 3), this.topLeftBorderDoubleInnerBox = B > 0 || s > 0 ? V(r.left + m * 2 / 3, r.top + h * 2 / 3, B - m * 2 / 3, s - h * 2 / 3, M.TOP_LEFT) : new d(r.left + m * 2 / 3, r.top + h * 2 / 3), this.topRightBorderDoubleInnerBox = B > 0 || s > 0 ? V(r.left + Q, r.top + h * 2 / 3, i - x * 2 / 3, o - h * 2 / 3, M.TOP_RIGHT) : new d(r.left + r.width - x * 2 / 3, r.top + h * 2 / 3), this.bottomRightBorderDoubleInnerBox = l > 0 || g > 0 ? V(r.left + K, r.top + I, l - x * 2 / 3, g - S * 2 / 3, M.BOTTOM_RIGHT) : new d(r.left + r.width - x * 2 / 3, r.top + r.height - S * 2 / 3), this.bottomLeftBorderDoubleInnerBox = w > 0 || C > 0 ? V(r.left + m * 2 / 3, r.top + v, w - m * 2 / 3, C - S * 2 / 3, M.BOTTOM_LEFT) : new d(r.left + m * 2 / 3, r.top + r.height - S * 2 / 3), this.topLeftBorderStroke = B > 0 || s > 0 ? V(r.left + m / 2, r.top + h / 2, B - m / 2, s - h / 2, M.TOP_LEFT) : new d(r.left + m / 2, r.top + h / 2), this.topRightBorderStroke = B > 0 || s > 0 ? V(r.left + Q, r.top + h / 2, i - x / 2, o - h / 2, M.TOP_RIGHT) : new d(r.left + r.width - x / 2, r.top + h / 2), this.bottomRightBorderStroke = l > 0 || g > 0 ? V(r.left + K, r.top + I, l - x / 2, g - S / 2, M.BOTTOM_RIGHT) : new d(r.left + r.width - x / 2, r.top + r.height - S / 2), this.bottomLeftBorderStroke = w > 0 || C > 0 ? V(r.left + m / 2, r.top + v, w - m / 2, C - S / 2, M.BOTTOM_LEFT) : new d(r.left + m / 2, r.top + r.height - S / 2), this.topLeftBorderBox = B > 0 || s > 0 ? V(r.left, r.top, B, s, M.TOP_LEFT) : new d(r.left, r.top), this.topRightBorderBox = i > 0 || o > 0 ? V(r.left + Q, r.top, i, o, M.TOP_RIGHT) : new d(r.left + r.width, r.top), this.bottomRightBorderBox = l > 0 || g > 0 ? V(r.left + K, r.top + I, l, g, M.BOTTOM_RIGHT) : new d(r.left + r.width, r.top + r.height), this.bottomLeftBorderBox = w > 0 || C > 0 ? V(r.left, r.top + v, w, C, M.BOTTOM_LEFT) : new d(r.left, r.top + r.height), this.topLeftPaddingBox = B > 0 || s > 0 ? V(r.left + m, r.top + h, Math.max(0, B - m), Math.max(0, s - h), M.TOP_LEFT) : new d(r.left + m, r.top + h), this.topRightPaddingBox = i > 0 || o > 0 ? V(r.left + Math.min(Q, r.width - x), r.top + h, Q > r.width + x ? 0 : Math.max(0, i - x), Math.max(0, o - h), M.TOP_RIGHT) : new d(r.left + r.width - x, r.top + h), this.bottomRightPaddingBox = l > 0 || g > 0 ? V(r.left + Math.min(K, r.width - m), r.top + Math.min(I, r.height - S), Math.max(0, l - x), Math.max(0, g - S), M.BOTTOM_RIGHT) : new d(r.left + r.width - x, r.top + r.height - S), this.bottomLeftPaddingBox = w > 0 || C > 0 ? V(r.left + m, r.top + Math.min(v, r.height - S), Math.max(0, w - m), Math.max(0, C - S), M.BOTTOM_LEFT) : new d(r.left + m, r.top + r.height - S), this.topLeftContentBox = B > 0 || s > 0 ? V(r.left + m + E, r.top + h + f, Math.max(0, B - (m + E)), Math.max(0, s - (h + f)), M.TOP_LEFT) : new d(r.left + m + E, r.top + h + f), this.topRightContentBox = i > 0 || o > 0 ? V(r.left + Math.min(Q, r.width + m + E), r.top + h + f, Q > r.width + m + E ? 0 : i - m + E, o - (h + f), M.TOP_RIGHT) : new d(r.left + r.width - (x + u), r.top + h + f), this.bottomRightContentBox = l > 0 || g > 0 ? V(r.left + Math.min(K, r.width - (m + E)), r.top + Math.min(I, r.height + h + f), Math.max(0, l - (x + u)), g - (S + H), M.BOTTOM_RIGHT) : new d(r.left + r.width - (x + u), r.top + r.height - (S + H)), this.bottomLeftContentBox = w > 0 || C > 0 ? V(r.left + m + E, r.top + v, Math.max(0, w - (m + E)), C - (S + H), M.BOTTOM_LEFT) : new d(r.left + m + E, r.top + r.height - (S + H));
     }
     return e;
   }()
-), O;
+), M;
 (function(e) {
   e[e.TOP_LEFT = 0] = "TOP_LEFT", e[e.TOP_RIGHT = 1] = "TOP_RIGHT", e[e.BOTTOM_RIGHT = 2] = "BOTTOM_RIGHT", e[e.BOTTOM_LEFT = 3] = "BOTTOM_LEFT";
-})(O || (O = {}));
+})(M || (M = {}));
 var V = function(e, A, t, r, n) {
   var B = 4 * ((Math.sqrt(2) - 1) / 3), s = t * B, a = r * B, i = e + t, o = A + r;
   switch (n) {
-    case O.TOP_LEFT:
+    case M.TOP_LEFT:
       return new Re(new d(e, o), new d(e, o - a), new d(i - s, A), new d(i, A));
-    case O.TOP_RIGHT:
+    case M.TOP_RIGHT:
       return new Re(new d(e, A), new d(e + s, A), new d(i, o - a), new d(i, o));
-    case O.BOTTOM_RIGHT:
+    case M.BOTTOM_RIGHT:
       return new Re(new d(i, A), new d(i, A + a), new d(e + s, o), new d(e, o));
-    case O.BOTTOM_LEFT:
+    case M.BOTTOM_LEFT:
     default:
       return new Re(new d(i, o), new d(i - s, o), new d(e, A + a), new d(e, A));
   }
@@ -4159,8 +4159,8 @@ var V = function(e, A, t, r, n) {
     return [C, y];
   }
   if (i) {
-    var f = 0, Q = 0;
-    return X(s) ? f = R(s, t.width) : X(a) && (Q = R(a, t.height)), XA(s) ? f = Q * B : (!a || XA(a)) && (Q = f / B), [f, Q];
+    var U = 0, Q = 0;
+    return X(s) ? U = R(s, t.width) : X(a) && (Q = R(a, t.height)), XA(s) ? U = Q * B : (!a || XA(a)) && (Q = U / B), [U, Q];
   }
   var I = null, K = null;
   if (X(s) ? I = R(s, t.width) : a && X(a) && (K = R(a, t.height)), I !== null && (!a || XA(a)) && (K = c && l ? I / r * n : t.height), K !== null && XA(s) && (I = c && l ? K / n * r : t.width), I !== null && K !== null)
@@ -4315,10 +4315,10 @@ var V = function(e, A, t, r, n) {
                 case 0:
                   g.ctx.fillStyle = J(r.color), g.renderTextWithLetterSpacing(w, r.letterSpacing, o);
                   var y = r.textShadow;
-                  y.length && w.text.trim().length && (y.slice(0).reverse().forEach(function(f) {
-                    g.ctx.shadowColor = J(f.color), g.ctx.shadowOffsetX = f.offsetX.number * g.options.scale, g.ctx.shadowOffsetY = f.offsetY.number * g.options.scale, g.ctx.shadowBlur = f.blur.number, g.renderTextWithLetterSpacing(w, r.letterSpacing, o);
-                  }), g.ctx.shadowColor = "", g.ctx.shadowOffsetX = 0, g.ctx.shadowOffsetY = 0, g.ctx.shadowBlur = 0), r.textDecorationLine.length && (g.ctx.fillStyle = J(r.textDecorationColor || r.color), r.textDecorationLine.forEach(function(f) {
-                    switch (f) {
+                  y.length && w.text.trim().length && (y.slice(0).reverse().forEach(function(U) {
+                    g.ctx.shadowColor = J(U.color), g.ctx.shadowOffsetX = U.offsetX.number * g.options.scale, g.ctx.shadowOffsetY = U.offsetY.number * g.options.scale, g.ctx.shadowBlur = U.blur.number, g.renderTextWithLetterSpacing(w, r.letterSpacing, o);
+                  }), g.ctx.shadowColor = "", g.ctx.shadowOffsetX = 0, g.ctx.shadowOffsetY = 0, g.ctx.shadowBlur = 0), r.textDecorationLine.length && (g.ctx.fillStyle = J(r.textDecorationColor || r.color), r.textDecorationLine.forEach(function(U) {
+                    switch (U) {
                       case 1:
                         g.ctx.fillRect(w.bounds.left, Math.round(w.bounds.top + o), w.bounds.width, 1);
                         break;
@@ -4349,7 +4349,7 @@ var V = function(e, A, t, r, n) {
       }
     }, A.prototype.renderNodeContent = function(t) {
       return $(this, void 0, void 0, function() {
-        var r, n, B, s, a, i, Q, Q, o, c, l, g, K, F, w, v, C, y, f, Q, I, K, v;
+        var r, n, B, s, a, i, Q, Q, o, c, l, g, K, F, w, v, C, y, U, Q, I, K, v;
         return q(this, function(h) {
           switch (h.label) {
             case 0:
@@ -4423,8 +4423,8 @@ var V = function(e, A, t, r, n) {
                 /* LIST_ITEM */
               )) return [3, 20];
               if (r.styles.listStyleImage === null) return [3, 19];
-              if (f = r.styles.listStyleImage, f.type !== 0) return [3, 18];
-              Q = void 0, I = f.url, h.label = 15;
+              if (U = r.styles.listStyleImage, U.type !== 0) return [3, 18];
+              Q = void 0, I = U.url, h.label = 15;
             case 15:
               return h.trys.push([15, 17, , 18]), [4, this.context.cache.match(I)];
             case 16:
@@ -4445,7 +4445,7 @@ var V = function(e, A, t, r, n) {
       });
     }, A.prototype.renderStackContent = function(t) {
       return $(this, void 0, void 0, function() {
-        var r, n, f, B, s, f, a, i, f, o, c, f, l, g, f, F, w, f, C, y, f;
+        var r, n, U, B, s, U, a, i, U, o, c, U, l, g, U, F, w, U, C, y, U;
         return q(this, function(Q) {
           switch (Q.label) {
             case 0:
@@ -4459,7 +4459,7 @@ var V = function(e, A, t, r, n) {
             case 1:
               Q.sent(), r = 0, n = t.negativeZIndex, Q.label = 2;
             case 2:
-              return r < n.length ? (f = n[r], [4, this.renderStack(f)]) : [3, 5];
+              return r < n.length ? (U = n[r], [4, this.renderStack(U)]) : [3, 5];
             case 3:
               Q.sent(), Q.label = 4;
             case 4:
@@ -4469,7 +4469,7 @@ var V = function(e, A, t, r, n) {
             case 6:
               Q.sent(), B = 0, s = t.nonInlineLevel, Q.label = 7;
             case 7:
-              return B < s.length ? (f = s[B], [4, this.renderNode(f)]) : [3, 10];
+              return B < s.length ? (U = s[B], [4, this.renderNode(U)]) : [3, 10];
             case 8:
               Q.sent(), Q.label = 9;
             case 9:
@@ -4477,7 +4477,7 @@ var V = function(e, A, t, r, n) {
             case 10:
               a = 0, i = t.nonPositionedFloats, Q.label = 11;
             case 11:
-              return a < i.length ? (f = i[a], [4, this.renderStack(f)]) : [3, 14];
+              return a < i.length ? (U = i[a], [4, this.renderStack(U)]) : [3, 14];
             case 12:
               Q.sent(), Q.label = 13;
             case 13:
@@ -4485,7 +4485,7 @@ var V = function(e, A, t, r, n) {
             case 14:
               o = 0, c = t.nonPositionedInlineLevel, Q.label = 15;
             case 15:
-              return o < c.length ? (f = c[o], [4, this.renderStack(f)]) : [3, 18];
+              return o < c.length ? (U = c[o], [4, this.renderStack(U)]) : [3, 18];
             case 16:
               Q.sent(), Q.label = 17;
             case 17:
@@ -4493,7 +4493,7 @@ var V = function(e, A, t, r, n) {
             case 18:
               l = 0, g = t.inlineLevel, Q.label = 19;
             case 19:
-              return l < g.length ? (f = g[l], [4, this.renderNode(f)]) : [3, 22];
+              return l < g.length ? (U = g[l], [4, this.renderNode(U)]) : [3, 22];
             case 20:
               Q.sent(), Q.label = 21;
             case 21:
@@ -4501,7 +4501,7 @@ var V = function(e, A, t, r, n) {
             case 22:
               F = 0, w = t.zeroOrAutoZIndexOrTransformedOrOpacity, Q.label = 23;
             case 23:
-              return F < w.length ? (f = w[F], [4, this.renderStack(f)]) : [3, 26];
+              return F < w.length ? (U = w[F], [4, this.renderStack(U)]) : [3, 26];
             case 24:
               Q.sent(), Q.label = 25;
             case 25:
@@ -4509,7 +4509,7 @@ var V = function(e, A, t, r, n) {
             case 26:
               C = 0, y = t.positiveZIndex, Q.label = 27;
             case 27:
-              return C < y.length ? (f = y[C], [4, this.renderStack(f)]) : [3, 30];
+              return C < y.length ? (U = y[C], [4, this.renderStack(U)]) : [3, 30];
             case 28:
               Q.sent(), Q.label = 29;
             case 29:
@@ -4549,7 +4549,7 @@ var V = function(e, A, t, r, n) {
           switch (o.label) {
             case 0:
               r = t.styles.backgroundImage.length - 1, n = function(c) {
-                var l, g, F, U, L, N, E, D, S, w, U, L, N, E, D, C, y, f, Q, I, K, v, h, x, S, m, U, u, H, E, D, M, L, N, Z, z, eA, lA, LA, uA, bA, CA;
+                var l, g, F, f, L, N, E, D, S, w, f, L, N, E, D, C, y, U, Q, I, K, v, h, x, S, m, f, u, H, E, D, O, L, N, Z, z, eA, lA, LA, uA, bA, CA;
                 return q(this, function(GA) {
                   switch (GA.label) {
                     case 0:
@@ -4566,17 +4566,17 @@ var V = function(e, A, t, r, n) {
                         l.width,
                         l.height,
                         l.width / l.height
-                      ]), U = F[0], L = F[1], N = F[2], E = F[3], D = F[4], S = B.ctx.createPattern(B.resizeImage(l, E, D), "repeat"), B.renderRepeat(U, S, L, N)), [3, 6];
+                      ]), f = F[0], L = F[1], N = F[2], E = F[3], D = F[4], S = B.ctx.createPattern(B.resizeImage(l, E, D), "repeat"), B.renderRepeat(f, S, L, N)), [3, 6];
                     case 5:
-                      Ia(c) ? (w = Mr(t, r, [null, null, null]), U = w[0], L = w[1], N = w[2], E = w[3], D = w[4], C = da(c.angle, E, D), y = C[0], f = C[1], Q = C[2], I = C[3], K = C[4], v = document.createElement("canvas"), v.width = E, v.height = D, h = v.getContext("2d"), x = h.createLinearGradient(f, I, Q, K), Ot(c.stops, y).forEach(function(qA) {
+                      Ia(c) ? (w = Mr(t, r, [null, null, null]), f = w[0], L = w[1], N = w[2], E = w[3], D = w[4], C = da(c.angle, E, D), y = C[0], U = C[1], Q = C[2], I = C[3], K = C[4], v = document.createElement("canvas"), v.width = E, v.height = D, h = v.getContext("2d"), x = h.createLinearGradient(U, I, Q, K), Ot(c.stops, y).forEach(function(qA) {
                         return x.addColorStop(qA.stop, J(qA.color));
-                      }), h.fillStyle = x, h.fillRect(0, 0, E, D), E > 0 && D > 0 && (S = B.ctx.createPattern(v, "repeat"), B.renderRepeat(U, S, L, N))) : ya(c) && (m = Mr(t, r, [
+                      }), h.fillStyle = x, h.fillRect(0, 0, E, D), E > 0 && D > 0 && (S = B.ctx.createPattern(v, "repeat"), B.renderRepeat(f, S, L, N))) : ya(c) && (m = Mr(t, r, [
                         null,
                         null,
                         null
-                      ]), U = m[0], u = m[1], H = m[2], E = m[3], D = m[4], M = c.position.length === 0 ? [it] : c.position, L = R(M[0], E), N = R(M[M.length - 1], D), Z = pa(c, L, N, E, D), z = Z[0], eA = Z[1], z > 0 && eA > 0 && (lA = B.ctx.createRadialGradient(u + L, H + N, 0, u + L, H + N, z), Ot(c.stops, z * 2).forEach(function(qA) {
+                      ]), f = m[0], u = m[1], H = m[2], E = m[3], D = m[4], O = c.position.length === 0 ? [it] : c.position, L = R(O[0], E), N = R(O[O.length - 1], D), Z = pa(c, L, N, E, D), z = Z[0], eA = Z[1], z > 0 && eA > 0 && (lA = B.ctx.createRadialGradient(u + L, H + N, 0, u + L, H + N, z), Ot(c.stops, z * 2).forEach(function(qA) {
                         return lA.addColorStop(qA.stop, J(qA.color));
-                      }), B.path(U), B.ctx.fillStyle = lA, z !== eA ? (LA = t.bounds.left + 0.5 * t.bounds.width, uA = t.bounds.top + 0.5 * t.bounds.height, bA = eA / z, CA = 1 / bA, B.ctx.save(), B.ctx.translate(LA, uA), B.ctx.transform(1, 0, 0, bA, 0, 0), B.ctx.translate(-LA, -uA), B.ctx.fillRect(u, CA * (H - uA) + uA, E, D * CA), B.ctx.restore()) : B.ctx.fill())), GA.label = 6;
+                      }), B.path(f), B.ctx.fillStyle = lA, z !== eA ? (LA = t.bounds.left + 0.5 * t.bounds.width, uA = t.bounds.top + 0.5 * t.bounds.height, bA = eA / z, CA = 1 / bA, B.ctx.save(), B.ctx.translate(LA, uA), B.ctx.transform(1, 0, 0, bA, 0, 0), B.ctx.translate(-LA, -uA), B.ctx.fillRect(u, CA * (H - uA) + uA, E, D * CA), B.ctx.restore()) : B.ctx.fill())), GA.label = 6;
                     case 6:
                       return r--, [
                         2
@@ -4695,9 +4695,9 @@ var V = function(e, A, t, r, n) {
       });
     }, A.prototype.renderDashedDottedBorder = function(t, r, n, B, s) {
       return $(this, void 0, void 0, function() {
-        var a, i, o, c, l, g, F, w, C, y, f, Q, I, K, v, h, v, h;
+        var a, i, o, c, l, g, F, w, C, y, U, Q, I, K, v, h, v, h;
         return q(this, function(x) {
-          return this.ctx.save(), a = xc(B, n), i = wn(B, n), s === 2 && (this.path(i), this.ctx.clip()), nA(i[0]) ? (o = i[0].start.x, c = i[0].start.y) : (o = i[0].x, c = i[0].y), nA(i[1]) ? (l = i[1].end.x, g = i[1].end.y) : (l = i[1].x, g = i[1].y), n === 0 || n === 2 ? F = Math.abs(o - l) : F = Math.abs(c - g), this.ctx.beginPath(), s === 3 ? this.formatPath(a) : this.formatPath(i.slice(0, 2)), w = r < 3 ? r * 3 : r * 2, C = r < 3 ? r * 2 : r, s === 3 && (w = r, C = r), y = !0, F <= w * 2 ? y = !1 : F <= w * 2 + C ? (f = F / (2 * w + C), w *= f, C *= f) : (Q = Math.floor((F + C) / (w + C)), I = (F - Q * w) / (Q - 1), K = (F - (Q + 1) * w) / Q, C = K <= 0 || Math.abs(C - I) < Math.abs(C - K) ? I : K), y && (s === 3 ? this.ctx.setLineDash([0, w + C]) : this.ctx.setLineDash([w, C])), s === 3 ? (this.ctx.lineCap = "round", this.ctx.lineWidth = r) : this.ctx.lineWidth = r * 2 + 1.1, this.ctx.strokeStyle = J(t), this.ctx.stroke(), this.ctx.setLineDash([]), s === 2 && (nA(i[0]) && (v = i[3], h = i[0], this.ctx.beginPath(), this.formatPath([new d(v.end.x, v.end.y), new d(h.start.x, h.start.y)]), this.ctx.stroke()), nA(i[1]) && (v = i[1], h = i[2], this.ctx.beginPath(), this.formatPath([new d(v.end.x, v.end.y), new d(h.start.x, h.start.y)]), this.ctx.stroke())), this.ctx.restore(), [
+          return this.ctx.save(), a = xc(B, n), i = wn(B, n), s === 2 && (this.path(i), this.ctx.clip()), nA(i[0]) ? (o = i[0].start.x, c = i[0].start.y) : (o = i[0].x, c = i[0].y), nA(i[1]) ? (l = i[1].end.x, g = i[1].end.y) : (l = i[1].x, g = i[1].y), n === 0 || n === 2 ? F = Math.abs(o - l) : F = Math.abs(c - g), this.ctx.beginPath(), s === 3 ? this.formatPath(a) : this.formatPath(i.slice(0, 2)), w = r < 3 ? r * 3 : r * 2, C = r < 3 ? r * 2 : r, s === 3 && (w = r, C = r), y = !0, F <= w * 2 ? y = !1 : F <= w * 2 + C ? (U = F / (2 * w + C), w *= U, C *= U) : (Q = Math.floor((F + C) / (w + C)), I = (F - Q * w) / (Q - 1), K = (F - (Q + 1) * w) / Q, C = K <= 0 || Math.abs(C - I) < Math.abs(C - K) ? I : K), y && (s === 3 ? this.ctx.setLineDash([0, w + C]) : this.ctx.setLineDash([w, C])), s === 3 ? (this.ctx.lineCap = "round", this.ctx.lineWidth = r) : this.ctx.lineWidth = r * 2 + 1.1, this.ctx.strokeStyle = J(t), this.ctx.stroke(), this.ctx.setLineDash([]), s === 2 && (nA(i[0]) && (v = i[3], h = i[0], this.ctx.beginPath(), this.formatPath([new d(v.end.x, v.end.y), new d(h.start.x, h.start.y)]), this.ctx.stroke()), nA(i[1]) && (v = i[1], h = i[2], this.ctx.beginPath(), this.formatPath([new d(v.end.x, v.end.y), new d(h.start.x, h.start.y)]), this.ctx.stroke())), this.ctx.restore(), [
             2
             /*return*/
           ];
@@ -4814,7 +4814,7 @@ var V = function(e, A, t, r, n) {
 typeof window < "u" && QB.setContext(window);
 var qc = function(e, A) {
   return $(void 0, void 0, void 0, function() {
-    var t, r, n, B, s, a, i, o, c, l, g, F, w, C, y, f, Q, I, K, v, x, h, x, S, m, U, u, H, E, D, M, L, N, Z, z, eA, lA, LA, uA, bA;
+    var t, r, n, B, s, a, i, o, c, l, g, F, w, C, y, U, Q, I, K, v, x, h, x, S, m, f, u, H, E, D, O, L, N, Z, z, eA, lA, LA, uA, bA;
     return q(this, function(CA) {
       switch (CA.label) {
         case 0:
@@ -4828,12 +4828,12 @@ var qc = function(e, A) {
             allowTaint: (S = A.allowTaint) !== null && S !== void 0 ? S : !1,
             imageTimeout: (m = A.imageTimeout) !== null && m !== void 0 ? m : 15e3,
             proxy: A.proxy,
-            useCORS: (U = A.useCORS) !== null && U !== void 0 ? U : !1
+            useCORS: (f = A.useCORS) !== null && f !== void 0 ? f : !1
           }, B = Rr({ logging: (u = A.logging) !== null && u !== void 0 ? u : !0, cache: A.cache }, n), s = {
             windowWidth: (H = A.windowWidth) !== null && H !== void 0 ? H : r.innerWidth,
             windowHeight: (E = A.windowHeight) !== null && E !== void 0 ? E : r.innerHeight,
             scrollX: (D = A.scrollX) !== null && D !== void 0 ? D : r.pageXOffset,
-            scrollY: (M = A.scrollY) !== null && M !== void 0 ? M : r.pageYOffset
+            scrollY: (O = A.scrollY) !== null && O !== void 0 ? O : r.pageYOffset
           }, a = new hA(s.scrollX, s.scrollY, s.windowWidth, s.windowHeight), i = new zc(B, a), o = (L = A.foreignObjectRendering) !== null && L !== void 0 ? L : !1, c = {
             allowTaint: (N = A.allowTaint) !== null && N !== void 0 ? N : !1,
             onclone: A.onclone,
@@ -4842,11 +4842,11 @@ var qc = function(e, A) {
             copyStyles: o
           }, i.logger.debug("Starting document clone with size " + a.width + "x" + a.height + " scrolled to " + -a.left + "," + -a.top), l = new ln(i, e, c), g = l.clonedReferenceElement, g ? [4, l.toIFrame(t, a)] : [2, Promise.reject("Unable to find element in cloned iframe")];
         case 1:
-          return F = CA.sent(), w = Qt(g) || $o(g) ? mB(g.ownerDocument) : tr(i, g), C = w.width, y = w.height, f = w.left, Q = w.top, I = jc(i, g, A.backgroundColor), K = {
+          return F = CA.sent(), w = Qt(g) || $o(g) ? mB(g.ownerDocument) : tr(i, g), C = w.width, y = w.height, U = w.left, Q = w.top, I = jc(i, g, A.backgroundColor), K = {
             canvas: A.canvas,
             backgroundColor: I,
             scale: (z = (Z = A.scale) !== null && Z !== void 0 ? Z : r.devicePixelRatio) !== null && z !== void 0 ? z : 1,
-            x: ((eA = A.x) !== null && eA !== void 0 ? eA : 0) + f,
+            x: ((eA = A.x) !== null && eA !== void 0 ? eA : 0) + U,
             y: ((lA = A.y) !== null && lA !== void 0 ? lA : 0) + Q,
             width: (LA = A.width) !== null && LA !== void 0 ? LA : Math.ceil(C),
             height: (uA = A.height) !== null && uA !== void 0 ? uA : Math.ceil(y)
@@ -4854,7 +4854,7 @@ var qc = function(e, A) {
         case 2:
           return v = CA.sent(), [3, 5];
         case 3:
-          return i.logger.debug("Document cloned, element located at " + f + "," + Q + " with size " + C + "x" + y + " using computed rendering"), i.logger.debug("Starting DOM parsing"), h = BB(i, g), I === h.styles.backgroundColor && (h.styles.backgroundColor = FA.TRANSPARENT), i.logger.debug("Starting renderer for element at " + K.x + "," + K.y + " with size " + K.width + "x" + K.height), x = new Nc(i, K), [4, x.render(h)];
+          return i.logger.debug("Document cloned, element located at " + U + "," + Q + " with size " + C + "x" + y + " using computed rendering"), i.logger.debug("Starting DOM parsing"), h = BB(i, g), I === h.styles.backgroundColor && (h.styles.backgroundColor = FA.TRANSPARENT), i.logger.debug("Starting renderer for element at " + K.x + "," + K.y + " with size " + K.width + "x" + K.height), x = new Nc(i, K), [4, x.render(h)];
         case 4:
           v = CA.sent(), CA.label = 5;
         case 5:
@@ -4885,9 +4885,9 @@ function el(e = {}) {
       l.value = !0;
       try {
         console.log("[AnalyzeChat] Loading conversations from database...");
-        const { data: U, error: u } = await s.schema("hf").from("ai_conversations").select("*").eq("user_id", a.id).order("created_at", { ascending: !1 }).limit(50);
+        const { data: f, error: u } = await s.schema("hf").from("ai_conversations").select("*").eq("user_id", a.id).order("created_at", { ascending: !1 }).limit(50);
         if (u) throw u;
-        o.value = U.map((H) => ({
+        o.value = f.map((H) => ({
           id: H.id,
           question: H.question,
           response: H.response,
@@ -4896,82 +4896,86 @@ function el(e = {}) {
           loading: !1,
           error: null,
           userId: H.user_id,
-          isFromDb: !0
+          isFromDb: !0,
+          api_payload: H.api_payload
+          // NEW: Load api_payload
         })), console.log(`[AnalyzeChat] Loaded ${o.value.length} conversations from database`);
-      } catch (U) {
-        console.error("[AnalyzeChat] Error loading from database:", U), C();
+      } catch (f) {
+        console.error("[AnalyzeChat] Error loading from database:", f), C();
       } finally {
         l.value = !1;
       }
     }
   }, C = () => {
     try {
-      const U = localStorage.getItem(r);
-      if (U) {
-        const u = JSON.parse(U);
+      const f = localStorage.getItem(r);
+      if (f) {
+        const u = JSON.parse(f);
         o.value = u.map((H) => ({
           ...H,
           timestamp: new Date(H.timestamp),
           isFromDb: !1
         })), console.log(`[AnalyzeChat] Loaded ${o.value.length} conversations from localStorage`);
       }
-    } catch (U) {
-      console.error("[AnalyzeChat] Error loading from localStorage:", U);
+    } catch (f) {
+      console.error("[AnalyzeChat] Error loading from localStorage:", f);
     }
   }, y = () => {
     try {
       localStorage.setItem(r, JSON.stringify(o.value));
-    } catch (U) {
-      console.error("[AnalyzeChat] Error saving to localStorage:", U);
+    } catch (f) {
+      console.error("[AnalyzeChat] Error saving to localStorage:", f);
     }
-  }, f = async (U, u, H) => {
+  }, U = async (f, u, H) => {
     if (!s)
-      return console.warn("[AnalyzeChat] No Supabase client, cannot upload screenshot"), U;
+      return console.warn("[AnalyzeChat] No Supabase client, cannot upload screenshot"), f;
     try {
       console.log("[AnalyzeChat] Uploading screenshot to Supabase Storage...");
-      const D = await (await fetch(U)).blob(), M = `${H}/${u}.png`, { error: L } = await s.storage.from("ai-screenshots").upload(M, D, {
+      const D = await (await fetch(f)).blob(), O = `${H}/${u}.png`, { error: L } = await s.storage.from("ai-screenshots").upload(O, D, {
         contentType: "image/png",
         upsert: !0,
         cacheControl: "3600"
       });
       if (L)
         throw console.error("[AnalyzeChat] Screenshot upload error:", L), L;
-      const { data: N } = s.storage.from("ai-screenshots").getPublicUrl(M);
+      const { data: N } = s.storage.from("ai-screenshots").getPublicUrl(O);
       return console.log("[AnalyzeChat] Screenshot uploaded successfully:", N.publicUrl), N.publicUrl;
     } catch (E) {
-      return console.error("[AnalyzeChat] Screenshot upload failed:", E), U;
+      return console.error("[AnalyzeChat] Screenshot upload failed:", E), f;
     }
-  }, Q = async (U) => {
+  }, Q = async (f) => {
     if (!s || !(a != null && a.id))
       return console.warn("[AnalyzeChat] Cannot save to database: missing supabaseClient or user"), !1;
     try {
       console.log("[AnalyzeChat] Saving conversation to database...");
-      let u = U.screenshot;
-      u && u.startsWith("data:") && (u = await f(u, U.id, a.id));
+      let u = f.screenshot;
+      u && u.startsWith("data:") && (u = await U(u, f.id, a.id));
       const { error: H } = await s.schema("hf").from("ai_conversations").insert({
-        id: U.id,
+        id: f.id,
         user_id: a.id,
-        question: U.question,
-        response: U.response,
-        screenshot_url: u
+        question: f.question,
+        response: f.response,
+        screenshot_url: u,
+        api_payload: f.api_payload
+        // NEW: Save api_payload
       });
       if (H)
         throw console.error("[AnalyzeChat] Database insert error:", H), H;
-      const E = o.value.findIndex((D) => D.id === U.id);
+      const E = o.value.findIndex((D) => D.id === f.id);
       return E !== -1 && (o.value[E].screenshot = u, o.value[E].isFromDb = !0, o.value[E].userId = a.id), console.log("[AnalyzeChat] Conversation saved to database successfully"), !0;
     } catch (u) {
       return console.error("[AnalyzeChat] Failed to save conversation to database:", u), !1;
     }
-  }, I = (U) => {
+  }, I = (f) => {
     try {
-      const u = U.className;
+      const u = f.className;
       return typeof u == "string" ? u : u && typeof u == "object" && "baseVal" in u && u.baseVal || "";
     } catch {
       return "";
     }
   }, K = () => {
-    const U = document.body.cloneNode(!0);
-    U.querySelectorAll([
+    const f = document.body.cloneNode(!0);
+    f.querySelectorAll([
       ".modal-overlay",
       '[role="dialog"]',
       ".modal",
@@ -4993,15 +4997,15 @@ function el(e = {}) {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       color: #000000;
       overflow: hidden;
-    `; U.firstChild; )
-      H.appendChild(U.firstChild);
+    `; f.firstChild; )
+      H.appendChild(f.firstChild);
     return H;
   }, v = async () => {
     if (!n)
       return null;
-    for (let U = 1; U <= t; U++)
+    for (let f = 1; f <= t; f++)
       try {
-        if (console.log(`[AnalyzeChat] Screenshot attempt ${U}/${t}`), U === 1) {
+        if (console.log(`[AnalyzeChat] Screenshot attempt ${f}/${t}`), f === 1) {
           const u = document.querySelectorAll([
             ".modal-overlay",
             '[role="dialog"]',
@@ -5027,18 +5031,18 @@ function el(e = {}) {
               removeContainer: !0,
               backgroundColor: "#ffffff",
               foreignObjectRendering: !1,
-              ignoreElements: (M) => {
+              ignoreElements: (O) => {
                 try {
-                  const L = I(M);
-                  return L.includes("modal") || L.includes("overlay") || L.includes("analyze-chat") || L.includes("dropdown") || L.includes("tooltip") || M.getAttribute("role") === "dialog";
+                  const L = I(O);
+                  return L.includes("modal") || L.includes("overlay") || L.includes("analyze-chat") || L.includes("dropdown") || L.includes("tooltip") || O.getAttribute("role") === "dialog";
                 } catch (L) {
                   return console.warn("[AnalyzeChat] Error checking element in ignoreElements:", L), !1;
                 }
               },
-              onclone: (M) => {
+              onclone: (O) => {
                 try {
                   console.log("[AnalyzeChat] Cleaning CSS in cloned document...");
-                  const L = M.querySelectorAll("style");
+                  const L = O.querySelectorAll("style");
                   console.log(`[AnalyzeChat] Found ${L.length} style elements`), L.forEach((Z, z) => {
                     if (Z.textContent) {
                       const eA = Z.textContent.length;
@@ -5046,7 +5050,7 @@ function el(e = {}) {
                       const lA = Z.textContent.length;
                       eA !== lA && console.log(`[AnalyzeChat] Style ${z}: cleaned ${eA - lA} chars`);
                     }
-                  }), M.querySelectorAll("[style]").forEach((Z) => {
+                  }), O.querySelectorAll("[style]").forEach((Z) => {
                     const z = Z.getAttribute("style");
                     if (z && /color\s*\(/i.test(z)) {
                       const eA = z.replace(/color\s*\([^)]*(?:\([^)]*\)[^)]*)*\)/gi, "#000000").replace(/lab\s*\([^)]*\)/gi, "#000000").replace(/lch\s*\([^)]*\)/gi, "#000000");
@@ -5058,18 +5062,18 @@ function el(e = {}) {
                 }
               }
             });
-            u.forEach((M, L) => {
-              M.style.display = H[L] || "";
+            u.forEach((O, L) => {
+              O.style.display = H[L] || "";
             });
             const D = E.toDataURL("image/png");
-            return console.log(`[AnalyzeChat] Screenshot captured successfully on attempt ${U}`), D;
+            return console.log(`[AnalyzeChat] Screenshot captured successfully on attempt ${f}`), D;
           } catch (E) {
-            throw u.forEach((D, M) => {
-              D.style.display = H[M] || "";
+            throw u.forEach((D, O) => {
+              D.style.display = H[O] || "";
             }), E;
           }
         }
-        if (U === 2) {
+        if (f === 2) {
           console.log("[AnalyzeChat] Trying fallback method with DOM cloning...");
           const u = K();
           u.style.position = "fixed", u.style.top = "-10000px", u.style.left = "-10000px", u.style.zIndex = "-1000", document.body.appendChild(u);
@@ -5089,8 +5093,8 @@ function el(e = {}) {
                   console.log("[AnalyzeChat] Cleaning CSS in fallback cloned document..."), D.querySelectorAll("style").forEach((L) => {
                     L.textContent && (L.textContent = L.textContent.replace(/color\s*\([^)]*(?:\([^)]*\)[^)]*)*\)/gi, "#000000").replace(/color-mix\s*\([^)]*(?:\([^)]*\)[^)]*)*\)/gi, "#000000").replace(/lab\s*\([^)]*\)/gi, "#000000").replace(/lch\s*\([^)]*\)/gi, "#000000").replace(/oklab\s*\([^)]*\)/gi, "#000000").replace(/oklch\s*\([^)]*\)/gi, "#000000").replace(/color\s*\(/gi, "rgb(0,0,0 /*"));
                   }), console.log("[AnalyzeChat] Fallback CSS cleaning completed");
-                } catch (M) {
-                  console.error("[AnalyzeChat] Error cleaning CSS in fallback:", M);
+                } catch (O) {
+                  console.error("[AnalyzeChat] Error cleaning CSS in fallback:", O);
                 }
               }
             });
@@ -5102,30 +5106,30 @@ function el(e = {}) {
           }
         }
       } catch (u) {
-        if (console.error(`[AnalyzeChat] Screenshot attempt ${U} failed:`, u), U === t)
+        if (console.error(`[AnalyzeChat] Screenshot attempt ${f} failed:`, u), f === t)
           return console.error("[AnalyzeChat] All screenshot attempts failed"), await h();
         await new Promise((H) => setTimeout(H, 300));
       }
     return null;
   }, h = async () => {
     try {
-      const U = document.createElement("canvas"), u = U.getContext("2d");
+      const f = document.createElement("canvas"), u = f.getContext("2d");
       if (!u) return "";
-      U.width = 800, U.height = 600, u.fillStyle = "#ffffff", u.fillRect(0, 0, U.width, U.height), u.fillStyle = "#000000", u.font = "16px Arial", u.fillText(`Page: ${window.location.pathname}`, 20, 40), u.fillText(`Title: ${document.title}`, 20, 70), u.fillText(`Time: ${(/* @__PURE__ */ new Date()).toLocaleString()}`, 20, 100), u.fillText("Screenshot capture failed - text summary provided", 20, 140);
+      f.width = 800, f.height = 600, u.fillStyle = "#ffffff", u.fillRect(0, 0, f.width, f.height), u.fillStyle = "#000000", u.font = "16px Arial", u.fillText(`Page: ${window.location.pathname}`, 20, 40), u.fillText(`Title: ${document.title}`, 20, 70), u.fillText(`Time: ${(/* @__PURE__ */ new Date()).toLocaleString()}`, 20, 100), u.fillText("Screenshot capture failed - text summary provided", 20, 140);
       const E = document.body.innerText.slice(0, 500).split(`
 `).slice(0, 20);
-      return u.font = "12px Arial", E.forEach((D, M) => {
-        D.trim() && u.fillText(D.trim().slice(0, 80), 20, 180 + M * 20);
-      }), U.toDataURL("image/jpeg", 0.8);
-    } catch (U) {
-      return console.error("[AnalyzeChat] Text-based screenshot also failed:", U), "";
+      return u.font = "12px Arial", E.forEach((D, O) => {
+        D.trim() && u.fillText(D.trim().slice(0, 80), 20, 180 + O * 20);
+      }), f.toDataURL("image/jpeg", 0.8);
+    } catch (f) {
+      return console.error("[AnalyzeChat] Text-based screenshot also failed:", f), "";
     }
-  }, x = async (U) => {
-    if (c.value || !U.trim()) return;
+  }, x = async (f) => {
+    if (c.value || !f.trim()) return;
     console.log("[AnalyzeChat] Starting AI question process..."), c.value = !0;
     const u = {
       id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
-      question: U.trim(),
+      question: f.trim(),
       response: "",
       screenshot: null,
       timestamp: /* @__PURE__ */ new Date(),
@@ -5164,8 +5168,8 @@ ${N}
 
 Please try again.`), new Error(N);
       }
-      const M = await D.json();
-      console.log("[AnalyzeChat] AI response received:", M), u.response = M.response || "Sorry, I could not process your request.", u.loading = !1, g() ? await Q(u) || (console.warn("[AnalyzeChat] Database save failed, falling back to localStorage"), y()) : y();
+      const O = await D.json();
+      console.log("[AnalyzeChat] AI response received:", O), u.response = O.response || "Sorry, I could not process your request.", u.api_payload = O.api_payload || null, u.loading = !1, g() ? await Q(u) || (console.warn("[AnalyzeChat] Database save failed, falling back to localStorage"), y()) : y();
     } catch (H) {
       console.error("[AnalyzeChat] Error in askQuestion:", H);
       const E = H instanceof Error ? H.message : "Failed to get response. Please try again.";
@@ -5174,23 +5178,23 @@ Please try again.`), new Error(N);
     c.value = !1, console.log("[AnalyzeChat] AI question process completed");
   }, S = async () => {
     console.log("[AnalyzeChat] Testing screenshot capture...");
-    const U = await v();
-    if (U) {
+    const f = await v();
+    if (f) {
       console.log("[AnalyzeChat] Test screenshot successful");
       const u = document.createElement("a");
-      u.href = U, u.download = `test-screenshot-${Date.now()}.jpg`, document.body.appendChild(u), u.click(), document.body.removeChild(u);
+      u.href = f, u.download = `test-screenshot-${Date.now()}.jpg`, document.body.appendChild(u), u.click(), document.body.removeChild(u);
     } else
       console.error("[AnalyzeChat] Test screenshot failed");
   }, m = async () => {
     if (g() && s && (a != null && a.id))
       try {
         console.log("[AnalyzeChat] Clearing conversations from database...");
-        const { error: U } = await s.schema("hf").from("ai_conversations").delete().eq("user_id", a.id);
-        if (U)
-          throw console.error("[AnalyzeChat] Error clearing database:", U), U;
+        const { error: f } = await s.schema("hf").from("ai_conversations").delete().eq("user_id", a.id);
+        if (f)
+          throw console.error("[AnalyzeChat] Error clearing database:", f), f;
         console.log("[AnalyzeChat] Database conversations cleared");
-      } catch (U) {
-        console.error("[AnalyzeChat] Failed to clear database:", U);
+      } catch (f) {
+        console.error("[AnalyzeChat] Failed to clear database:", f);
       }
     localStorage.removeItem(r), o.value = [], console.log("[AnalyzeChat] Conversations cleared");
   };
@@ -5247,14 +5251,14 @@ const rl = { class: "analyze-chat-header" }, tl = {
   },
   emits: ["close", "update:modelValue", "conversation-added", "error"],
   setup(e, { emit: A }) {
-    const t = e, r = A, n = SA(), B = SA(), s = SA(""), a = SA(null), { conversations: i, isProcessing: o, askQuestion: c } = el(t.config), l = (f) => {
-      f.target === f.currentTarget && (r("close"), r("update:modelValue", !1));
+    const t = e, r = A, n = SA(), B = SA(), s = SA(""), a = SA(null), { conversations: i, isProcessing: o, askQuestion: c } = el(t.config), l = (U) => {
+      U.target === U.currentTarget && (r("close"), r("update:modelValue", !1));
     }, g = async () => {
       if (!s.value.trim() || o.value) return;
-      const f = s.value.trim();
+      const U = s.value.trim();
       s.value = "";
       try {
-        await c(f);
+        await c(U);
         const Q = i.value[i.value.length - 1];
         Q && r("conversation-added", Q), wr(() => {
           B.value && (B.value.scrollTop = B.value.scrollHeight);
@@ -5262,15 +5266,15 @@ const rl = { class: "analyze-chat-header" }, tl = {
       } catch (Q) {
         r("error", Q instanceof Error ? Q : new Error("Unknown error"));
       }
-    }, F = (f) => new Intl.DateTimeFormat("en-US", {
+    }, F = (U) => new Intl.DateTimeFormat("en-US", {
       hour: "2-digit",
       minute: "2-digit",
       month: "short",
       day: "numeric"
-    }).format(f), w = (f) => f.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\*(.*?)\*/g, "<em>$1</em>").replace(/\n/g, "<br>"), C = (f) => {
-      a.value = f;
-    }, y = (f) => {
-      f.key === "Escape" && (a.value ? a.value = null : (r("close"), r("update:modelValue", !1)));
+    }).format(U), w = (U) => U.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\*(.*?)\*/g, "<em>$1</em>").replace(/\n/g, "<br>"), C = (U) => {
+      a.value = U;
+    }, y = (U) => {
+      U.key === "Escape" && (a.value ? a.value = null : (r("close"), r("update:modelValue", !1)));
     };
     return dB(() => {
       document.addEventListener("keydown", y), document.body.style.overflow = "hidden", wr(() => {
@@ -5282,7 +5286,7 @@ const rl = { class: "analyze-chat-header" }, tl = {
       wr(() => {
         B.value && (B.value.scrollTop = B.value.scrollHeight);
       });
-    }), (f, Q) => (iA(), aA("div", {
+    }), (U, Q) => (iA(), aA("div", {
       class: "analyze-chat-overlay",
       onClick: l
     }, [
@@ -5294,7 +5298,7 @@ const rl = { class: "analyze-chat-header" }, tl = {
         b("div", rl, [
           Q[4] || (Q[4] = b("h2", null, "Analyze", -1)),
           b("button", {
-            onClick: Q[0] || (Q[0] = (I) => f.$emit("close")),
+            onClick: Q[0] || (Q[0] = (I) => U.$emit("close")),
             class: "close-button"
           }, [...Q[3] || (Q[3] = [
             b("svg", {

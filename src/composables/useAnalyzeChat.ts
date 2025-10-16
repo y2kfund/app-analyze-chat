@@ -67,7 +67,8 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
         loading: false,
         error: null,
         userId: conv.user_id,
-        isFromDb: true
+        isFromDb: true,
+        api_payload: conv.api_payload  // NEW: Load api_payload
       }))
       
       console.log(`[AnalyzeChat] Loaded ${conversations.value.length} conversations from database`)
@@ -180,7 +181,8 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
           user_id: user.id,
           question: conversation.question,
           response: conversation.response,
-          screenshot_url: screenshotUrl
+          screenshot_url: screenshotUrl,
+          api_payload: conversation.api_payload  // NEW: Save api_payload
         })
 
       if (error) {
@@ -586,6 +588,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
       console.log('[AnalyzeChat] AI response received:', data)
       
       conversation.response = data.response || 'Sorry, I could not process your request.'
+      conversation.api_payload = data.api_payload || null  // NEW: Capture api_payload
       conversation.loading = false
       
       // ✅ ONLY save to database if API returned 200 OK
