@@ -544,13 +544,13 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
       } else {
         console.log('[AnalyzeChat] Using pre-captured screenshot from function argument.')
       }
-      
-      if (screenshot) {
-        conversation.screenshot = screenshot
-        console.log('[AnalyzeChat] Screenshot captured and stored successfully')
-      } else if (captureScreenshots) {
-        console.warn('[AnalyzeChat] Screenshot capture failed, proceeding without screenshot')
-      }
+      conversation.screenshot = screenshot
+      // if (screenshot) {
+      //   conversation.screenshot = screenshot
+      //   console.log('[AnalyzeChat] Screenshot captured and stored successfully')
+      // } else if (captureScreenshots) {
+      //   console.warn('[AnalyzeChat] Screenshot capture failed, proceeding without screenshot')
+      // }
       
       // Prepare the request payload
       const payload = {
