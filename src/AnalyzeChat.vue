@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch, inject } from 'vue'
 import { useAnalyzeChat } from './composables/useAnalyzeChat'
 import type { AnalyzeChatProps, AnalyzeChatEmits } from './types'
 
@@ -175,11 +175,59 @@ const handleEscape = (event: KeyboardEvent) => {
     }
   }
 }
+interface EventBus {
+  emit: (event: string, data: any) => void;
+  on: (event: string, callback: Function) => void;
+  off: (event: string, callback: Function) => void;
+}
 
-onMounted(() => {
-  document.addEventListener('keydown', handleEscape)
-  document.body.style.overflow = 'hidden'
+
+const eventBus = inject<EventBus>('eventBus');
+const handleAiQuestion = async(payload: { question: string; screenshotUrl?: string | null; id?: string }) => {
+  //console.log('[Child] Caught ai:submitQuestion event:', payload);
+  if (isProcessing.value) {
+    //console.warn('[Child] Already processing a question, ignoring event.');
+    return;
+  }
   
+  const question = payload.question.trim();
+  if (!question) return;
+
+  const externalScreenshotUrl = payload.screenshotUrl || null;
+  const id = payload.id || null;
+
+  try {
+    await askQuestion(question, externalScreenshotUrl, id);
+    
+    const latestConversation = conversations.value[0]; 
+    
+    if (latestConversation && latestConversation.response) {
+      //console.log('AI Answer Received via EventBus:', latestConversation.response);
+    } else if (latestConversation && latestConversation.error) {
+       //console.error('Answer Failed:', latestConversation.error);
+    }
+    
+    // Scroll to bottom after new message
+    nextTick(() => {
+      if (timelineRef.value) {
+        timelineRef.value.scrollTop = timelineRef.value.scrollHeight
+      }
+    })
+    
+  } catch (error) {
+    console.error('[Child] Error processing event question:', error);
+  }
+};
+onMounted(() => {
+  console.log("AnalyzeChat component mounted");
+  document.addEventListener('keydown', handleEscape)
+  // document.body.style.overflow = 'hidden'
+  if (eventBus) {
+    console.log("EVENTBUS found");
+    eventBus.on('ai:submitQuestion', handleAiQuestion);
+  } else {
+    console.error("EventBus injection failed in child component.");
+  }
   // Auto-scroll to bottom on mount if there are conversations
   nextTick(() => {
     if (timelineRef.value && conversations.value.length > 0) {
@@ -191,6 +239,9 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('keydown', handleEscape)
   document.body.style.overflow = ''
+  if (eventBus) {
+    eventBus.off('ai:submitQuestion', handleAiQuestion);
+  }
 })
 
 // Watch for new conversations and auto-scroll

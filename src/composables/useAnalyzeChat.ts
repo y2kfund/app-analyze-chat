@@ -50,7 +50,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
       
       const { data, error } = await supabaseClient
         .schema('hf')
-        .from('ai_conversations')
+        .from('ai_conversations_new')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
@@ -174,7 +174,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
       // Insert into database
       const { error } = await supabaseClient
         .schema('hf')
-        .from('ai_conversations')
+        .from('ai_conversations_new')
         .insert({
           id: conversation.id,
           user_id: user.id,
@@ -512,7 +512,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
   }
 
   // Send question to AI with screenshot
-  const askQuestion = async (question: string) => {
+  const askQuestion = async (question: string, preCapturedScreenshot: string | null = null, id: string | null = null) => {
     if (isProcessing.value || !question.trim()) return
     
     console.log('[AnalyzeChat] Starting AI question process...')
@@ -523,7 +523,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
       id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
       question: question.trim(),
       response: '',
-      screenshot: null,
+      screenshot: preCapturedScreenshot,
       timestamp: new Date(),
       loading: true,
       error: null,
@@ -534,10 +534,16 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
     conversations.value.unshift(conversation)
     
     try {
-      console.log('[AnalyzeChat] Capturing screenshot...')
       
       // Capture screenshot if enabled
-      const screenshot = await captureScreenshot()
+      let screenshot = conversation.screenshot; // pre-supplied URL or null
+
+      if (!screenshot) {
+        console.log('[AnalyzeChat] Capturing screenshot...')
+        screenshot = await captureScreenshot()
+      } else {
+        console.log('[AnalyzeChat] Using pre-captured screenshot from function argument.')
+      }
       
       if (screenshot) {
         conversation.screenshot = screenshot
@@ -643,7 +649,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
         console.log('[AnalyzeChat] Clearing conversations from database...')
         const { error } = await supabaseClient
           .schema('hf')
-          .from('ai_conversations')
+          .from('ai_conversations_new')
           .delete()
           .eq('user_id', user.id)
         
