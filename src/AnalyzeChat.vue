@@ -58,6 +58,26 @@
 
       <!-- Input Section -->
       <div class="input-section">
+        <!-- Screenshot Preview -->
+        <div class="screenshot-preview-section">
+          <div class="screenshot-preview-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="9" cy="9" r="2"/>
+              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+            </svg>
+            <span v-if="isCapturingScreenshot">Capturing screenshot...</span>
+            <span v-else-if="currentScreenshot">Screenshot captured</span>
+            <span v-else>Preparing screenshot...</span>
+          </div>
+          <div v-if="isCapturingScreenshot" class="screenshot-loading">
+            <div class="loading-spinner"></div>
+            <span>Capturing page content...</span>
+          </div>
+          <div v-else-if="currentScreenshot" class="screenshot-preview-small">
+            <img :src="currentScreenshot" alt="Captured screenshot" @click="showScreenshot(currentScreenshot)">
+          </div>
+        </div>
         <div class="input-container">
           <textarea
             v-model="currentQuestion"
@@ -80,14 +100,22 @@
               <polygon points="22,2 15,22 11,13 2,9 22,2"/>
             </svg>
           </button>
-        </div>
-        <p class="input-hint">Press Ctrl+Enter to send • Screenshots are automatically included</p>
+        </div>        
+        <p class="input-hint">Press Ctrl+Enter to send • Screenshot automatically included</p>
       </div>
     </div>
 
     <!-- Screenshot Modal -->
-    <div v-if="selectedScreenshot" class="screenshot-modal" @click="selectedScreenshot = null">
-      <img :src="selectedScreenshot" alt="Full screenshot">
+    <div v-if="selectedScreenshot" class="screenshot-modal-overlay" @click="closeScreenshotModal">
+      <div class="screenshot-modal-content">
+        <img :src="selectedScreenshot" alt="Full screenshot" @click.stop>
+        <button class="screenshot-modal-close" @click="closeScreenshotModal">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -107,8 +135,10 @@ const modalRef = ref<HTMLElement>()
 const timelineRef = ref<HTMLElement>()
 const currentQuestion = ref('')
 const selectedScreenshot = ref<string | null>(null)
+const currentScreenshot = ref<string | null>(null)
+const isCapturingScreenshot = ref(false)
 
-const { conversations, isProcessing, askQuestion } = useAnalyzeChat(props.config)
+const { conversations, isProcessing, askQuestion, captureScreenshot } = useAnalyzeChat(props.config)
 
 const handleOverlayClick = (event: Event) => {
   if (event.target === event.currentTarget) {
@@ -121,10 +151,11 @@ const handleSubmit = async () => {
   if (!currentQuestion.value.trim() || isProcessing.value) return
   
   const question = currentQuestion.value.trim()
+  const screenshot = currentScreenshot.value // Always use the captured screenshot
   currentQuestion.value = ''
   
   try {
-    await askQuestion(question)
+    await askQuestion(question, screenshot)
     
     // Emit event for new conversation
     const latestConversation = conversations.value[conversations.value.length - 1]
@@ -164,11 +195,32 @@ const showScreenshot = (screenshot: string) => {
   selectedScreenshot.value = screenshot
 }
 
+const closeScreenshotModal = () => {
+  selectedScreenshot.value = null
+}
+
+const captureScreenshotOnOpen = async () => {
+  if (isCapturingScreenshot.value) return
+  
+  isCapturingScreenshot.value = true
+  
+  try {
+    const screenshot = await captureScreenshot()
+    if (screenshot) {
+      currentScreenshot.value = screenshot
+    }
+  } catch (error) {
+    console.error('Failed to capture screenshot on modal open:', error)
+  } finally {
+    isCapturingScreenshot.value = false
+  }
+}
+
 // Escape key to close
 const handleEscape = (event: KeyboardEvent) => {
   if (event.key === 'Escape') {
     if (selectedScreenshot.value) {
-      selectedScreenshot.value = null
+      closeScreenshotModal()
     } else {
       emit('close')
       emit('update:modelValue', false)
@@ -179,6 +231,9 @@ const handleEscape = (event: KeyboardEvent) => {
 onMounted(() => {
   document.addEventListener('keydown', handleEscape)
   document.body.style.overflow = 'hidden'
+  
+  // Auto-capture screenshot when modal opens
+  captureScreenshotOnOpen()
   
   // Auto-scroll to bottom on mount if there are conversations
   nextTick(() => {
@@ -449,32 +504,117 @@ watch(() => conversations.value.length, () => {
   animation: spin 1s linear infinite;
 }
 
+.screenshot-preview-section {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.screenshot-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.screenshot-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  padding: 1rem;
+  justify-content: center;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.screenshot-preview-small {
+  max-width: 200px;
+}
+
+.screenshot-preview-small img {
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.screenshot-preview-small img:hover {
+  opacity: 0.8;
+}
+
 .input-hint {
   margin: 0.5rem 0 0 0;
   font-size: 0.75rem;
   color: #6b7280;
 }
 
-.screenshot-modal {
+.screenshot-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1100;
-  padding: 2rem;
-  cursor: pointer;
+  z-index: 1300;
+  backdrop-filter: blur(4px);
 }
 
-.screenshot-modal img {
+.screenshot-modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screenshot-modal-content img {
   max-width: 100%;
   max-height: 100%;
-  border-radius: 8px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  object-fit: contain;
+}
+
+.screenshot-modal-close {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+  color: #374151;
+}
+
+.screenshot-modal-close:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes spin {
@@ -510,6 +650,22 @@ watch(() => conversations.value.length, () => {
   
   .input-section {
     padding: 1rem;
+  }
+
+  .screenshot-modal-overlay {
+    padding: 1rem;
+  }
+
+  .screenshot-modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+
+  .screenshot-modal-close {
+    top: -16px;
+    right: -16px;
+    width: 36px;
+    height: 36px;
   }
 }
 

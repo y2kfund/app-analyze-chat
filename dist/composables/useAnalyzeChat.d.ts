@@ -33,7 +33,7 @@ export declare function useAnalyzeChat(config?: AnalyzeChatConfig): {
     }[]>;
     isProcessing: import('vue').ComputedRef<boolean>;
     isLoading: import('vue').ComputedRef<boolean>;
-    askQuestion: (question: string) => Promise<void>;
+    askQuestion: (question: string, preCapturedScreenshot?: string | null) => Promise<void>;
     clearConversations: () => Promise<void>;
     testScreenshot: () => Promise<void>;
     captureScreenshot: () => Promise<string | null>;

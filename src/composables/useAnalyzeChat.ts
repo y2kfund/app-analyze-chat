@@ -548,7 +548,7 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
   }
 
   // Send question to AI with screenshot
-  const askQuestion = async (question: string) => {
+  const askQuestion = async (question: string, preCapturedScreenshot?: string | null) => {
     if (isProcessing.value || !question.trim()) return
     
     console.log('[AnalyzeChat] Starting AI question process...')
@@ -572,8 +572,8 @@ export function useAnalyzeChat(config: AnalyzeChatConfig = {}) {
     try {
       console.log('[AnalyzeChat] Capturing screenshot...')
       
-      // Capture screenshot if enabled
-      const screenshot = await captureScreenshot()
+      // Use pre-captured screenshot if provided, otherwise capture new one
+      const screenshot = preCapturedScreenshot !== undefined ? preCapturedScreenshot : await captureScreenshot()
       
       if (screenshot) {
         conversation.screenshot = screenshot
